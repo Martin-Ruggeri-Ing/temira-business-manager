@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (vehicle(); as vehicleRef) {
+      <div>
+        <h2 data-cy="vehicleDetailsHeading"><span jhiTranslate="temiraApp.vehicle.detail.title">Vehicle</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ vehicleRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.vehicle.model">Model</span></dt>
+          <dd>
+            <span>{{ vehicleRef.model }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.vehicle.type">Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'temiraApp.VehicleType.' + (vehicleRef.type ?? 'null')">{{
+              {
+                null: '',
+                Camion: 'Camion',
+                Autobus: 'Autobus',
+                Tren: 'Tren',
+                Casas: 'Casas',
+                Rodantes: 'Rodantes',
+                Furgon: 'Furgon',
+                Camioneta: 'Camioneta',
+                Auto: 'Auto',
+              }[vehicleRef.type ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.vehicle.brand">Brand</span></dt>
+          <dd>
+            <span [jhiTranslate]="'temiraApp.VehicleBrand.' + (vehicleRef.brand ?? 'null')">{{
+              {
+                null: '',
+                Mercedes: 'Mercedes',
+                Benz: 'Benz',
+                Scania: 'Scania',
+                Volvo: 'Volvo',
+                Trucks: 'Trucks',
+                Iveco: 'Iveco',
+                Ford: 'Ford',
+                Marcopolo: 'Marcopolo',
+                Agrale: 'Agrale',
+                Buses: 'Buses',
+                Materfer: 'Materfer',
+                Alstom: 'Alstom',
+                CAF: 'CAF',
+                Sprinter: 'Sprinter',
+                Camper: 'Camper',
+                Volkswagen: 'Volkswagen',
+                Daily: 'Daily',
+                Renault: 'Renault',
+                Peugeot: 'Peugeot',
+                Citroen: 'Citroen',
+                Transit: 'Transit',
+                Ranger: 'Ranger',
+              }[vehicleRef.brand ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.vehicle.user">User</span></dt>
+          <dd>
+            <span>{{ vehicleRef.user?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/vehicle', vehicleRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

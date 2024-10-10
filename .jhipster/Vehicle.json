@@ -1,0 +1,40 @@
+{
+  "annotations": {
+    "changelogDate": "20241010032458"
+  },
+  "applications": ["temira"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "model",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "2100",
+      "fieldValidateRulesMin": "1900"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "VehicleType",
+      "fieldValues": "Camion,Autobus,Tren,Casas,Rodantes,Furgon,Camioneta,Auto"
+    },
+    {
+      "fieldName": "brand",
+      "fieldType": "VehicleBrand",
+      "fieldValues": "Mercedes,Benz,Scania,Volvo,Trucks,Iveco,Ford,Marcopolo,Agrale,Buses,Materfer,Alstom,CAF,Sprinter,Camper,Volkswagen,Daily,Renault,Peugeot,Citroen,Transit,Ranger"
+    }
+  ],
+  "name": "Vehicle",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -1,0 +1,26 @@
+{
+  "temiraApp": {
+    "sleepDetector": {
+      "home": {
+        "title": "Sleep Detectors",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Sleep Detector",
+        "createOrEditLabel": "Crear o editar Sleep Detector",
+        "notFound": "Ningún Sleep Detectors encontrado"
+      },
+      "created": "Un nuevo Sleep Detector ha sido creado con el identificador {{ param }}",
+      "updated": "Un Sleep Detector ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Sleep Detector ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Sleep Detector {{ id }}?"
+      },
+      "detail": {
+        "title": "Sleep Detector"
+      },
+      "id": "ID",
+      "vehicle": "Vehicle",
+      "driver": "Driver",
+      "user": "User"
+    }
+  }
+}

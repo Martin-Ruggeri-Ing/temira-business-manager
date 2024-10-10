@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (statement(); as statementRef) {
+      <div>
+        <h2 data-cy="statementDetailsHeading"><span jhiTranslate="temiraApp.statement.detail.title">Statement</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ statementRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.statement.dateCreation">Date Creation</span></dt>
+          <dd>
+            <span>{{ statementRef.dateCreation | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.statement.destination">Destination</span></dt>
+          <dd>
+            <span>{{ statementRef.destination }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.statement.pathCsv">Path Csv</span></dt>
+          <dd>
+            <span>{{ statementRef.pathCsv }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.statement.sleepDetector">Sleep Detector</span></dt>
+          <dd>
+            @if (statement()!.sleepDetector) {
+              <div>
+                <a [routerLink]="['/sleep-detector', statement()!.sleepDetector?.id, 'view']">{{ statementRef.sleepDetector?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="temiraApp.statement.vehicle">Vehicle</span></dt>
+          <dd>
+            @if (statement()!.vehicle) {
+              <div>
+                <a [routerLink]="['/vehicle', statement()!.vehicle?.id, 'view']">{{ statementRef.vehicle?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="temiraApp.statement.driver">Driver</span></dt>
+          <dd>
+            @if (statement()!.driver) {
+              <div>
+                <a [routerLink]="['/driver', statement()!.driver?.id, 'view']">{{ statementRef.driver?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/statement', statementRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

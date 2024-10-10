@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (driver(); as driverRef) {
+      <div>
+        <h2 data-cy="driverDetailsHeading"><span jhiTranslate="temiraApp.driver.detail.title">Driver</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ driverRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.driver.firstName">First Name</span></dt>
+          <dd>
+            <span>{{ driverRef.firstName }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.driver.lastName">Last Name</span></dt>
+          <dd>
+            <span>{{ driverRef.lastName }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.driver.user">User</span></dt>
+          <dd>
+            <span>{{ driverRef.user?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/driver', driverRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

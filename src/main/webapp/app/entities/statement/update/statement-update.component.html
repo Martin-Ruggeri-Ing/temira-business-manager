@@ -1,0 +1,159 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-statement-heading" data-cy="StatementCreateUpdateHeading" jhiTranslate="temiraApp.statement.home.createOrEditLabel">
+        Crear o editar Statement
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="temiraApp.statement.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let dateCreationRef = editForm.get('dateCreation')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_dateCreation" jhiTranslate="temiraApp.statement.dateCreation">Date Creation</label>
+          <div class="d-flex">
+            <input
+              id="field_dateCreation"
+              data-cy="dateCreation"
+              type="datetime-local"
+              class="form-control"
+              name="dateCreation"
+              formControlName="dateCreation"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (dateCreationRef.invalid && (dateCreationRef.dirty || dateCreationRef.touched)) {
+            <div>
+              @if (editForm.get('dateCreation')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('dateCreation')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >Este campo debe ser una fecha y hora.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let destinationRef = editForm.get('destination')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_destination" jhiTranslate="temiraApp.statement.destination">Destination</label>
+          <input
+            type="text"
+            class="form-control"
+            name="destination"
+            id="field_destination"
+            data-cy="destination"
+            formControlName="destination"
+          />
+          @if (destinationRef.invalid && (destinationRef.dirty || destinationRef.touched)) {
+            <div>
+              @if (editForm.get('destination')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('destination')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '3' }"
+                  >Este campo requiere al menos 3 caracteres.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        @let pathCsvRef = editForm.get('pathCsv')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_pathCsv" jhiTranslate="temiraApp.statement.pathCsv">Path Csv</label>
+          <input type="text" class="form-control" name="pathCsv" id="field_pathCsv" data-cy="pathCsv" formControlName="pathCsv" />
+          @if (pathCsvRef.invalid && (pathCsvRef.dirty || pathCsvRef.touched)) {
+            <div>
+              @if (editForm.get('pathCsv')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              @if (editForm.get('pathCsv')?.errors?.minlength) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.minlength" [translateValues]="{ min: '3' }"
+                  >Este campo requiere al menos 3 caracteres.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sleepDetector" jhiTranslate="temiraApp.statement.sleepDetector">Sleep Detector</label>
+          <select
+            class="form-control"
+            id="field_sleepDetector"
+            data-cy="sleepDetector"
+            name="sleepDetector"
+            formControlName="sleepDetector"
+            [compareWith]="compareSleepDetector"
+          >
+            <option [ngValue]="null"></option>
+            @for (sleepDetectorOption of sleepDetectorsSharedCollection; track $index) {
+              <option [ngValue]="sleepDetectorOption">{{ sleepDetectorOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_vehicle" jhiTranslate="temiraApp.statement.vehicle">Vehicle</label>
+          <select
+            class="form-control"
+            id="field_vehicle"
+            data-cy="vehicle"
+            name="vehicle"
+            formControlName="vehicle"
+            [compareWith]="compareVehicle"
+          >
+            <option [ngValue]="null"></option>
+            @for (vehicleOption of vehiclesSharedCollection; track $index) {
+              <option [ngValue]="vehicleOption">{{ vehicleOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driver" jhiTranslate="temiraApp.statement.driver">Driver</label>
+          <select
+            class="form-control"
+            id="field_driver"
+            data-cy="driver"
+            name="driver"
+            formControlName="driver"
+            [compareWith]="compareDriver"
+          >
+            <option [ngValue]="null"></option>
+            @for (driverOption of driversSharedCollection; track $index) {
+              <option [ngValue]="driverOption">{{ driverOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

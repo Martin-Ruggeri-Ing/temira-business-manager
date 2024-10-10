@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity Statement.
+    -->
+    <changeSet id="20241010032758-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="sleep_detector_id"
+                                 baseTableName="statement"
+                                 constraintName="fk_statement__sleep_detector_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sleep_detector"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="vehicle_id"
+                                 baseTableName="statement"
+                                 constraintName="fk_statement__vehicle_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="vehicle"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="driver_id"
+                                 baseTableName="statement"
+                                 constraintName="fk_statement__driver_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="driver"
+                                 />
+    </changeSet>
+</databaseChangeLog>

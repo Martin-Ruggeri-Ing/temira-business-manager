@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (sleepDetector(); as sleepDetectorRef) {
+      <div>
+        <h2 data-cy="sleepDetectorDetailsHeading"><span jhiTranslate="temiraApp.sleepDetector.detail.title">Sleep Detector</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ sleepDetectorRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="temiraApp.sleepDetector.vehicle">Vehicle</span></dt>
+          <dd>
+            @if (sleepDetector()!.vehicle) {
+              <div>
+                <a [routerLink]="['/vehicle', sleepDetector()!.vehicle?.id, 'view']">{{ sleepDetectorRef.vehicle?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="temiraApp.sleepDetector.driver">Driver</span></dt>
+          <dd>
+            @if (sleepDetector()!.driver) {
+              <div>
+                <a [routerLink]="['/driver', sleepDetector()!.driver?.id, 'view']">{{ sleepDetectorRef.driver?.firstName }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="temiraApp.sleepDetector.user">User</span></dt>
+          <dd>
+            <span>{{ sleepDetectorRef.user?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/sleep-detector', sleepDetectorRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

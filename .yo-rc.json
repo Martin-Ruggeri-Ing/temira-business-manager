@@ -1,0 +1,22 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "temira",
+    "buildTool": "maven",
+    "clientFramework": "angular",
+    "clientTheme": "darkly",
+    "devServerPort": 4200,
+    "enableSwaggerCodegen": true,
+    "enableTranslation": true,
+    "entities": ["Vehicle", "Driver", "SleepDetector", "Statement"],
+    "jhipsterVersion": "8.7.1",
+    "jwtSecretKey": "ODhmYjUyNzdhMjNmYTViZDkxNGMwN2UzNmE3OTcwMmNjYzBkM2Y2MzQ4ZmY0Zjk1NTMyNGI4ZWNmYTJjOTliMGJhZjg4ZTYxZmRhZjNjMDcyNWE5MmQxZTVhZjdjNDJmMTEyY2JkNzMzY2VmNDVlNWQ4ODBlZDI5MTA0ZDUxMTc=",
+    "languages": ["es", "en"],
+    "lastLiquibaseTimestamp": 1728530878000,
+    "nativeLanguage": "es",
+    "packageName": "ar.edu.um.temira",
+    "prodDatabaseType": "mysql",
+    "testFrameworks": []
+  }
+}

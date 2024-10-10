@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20241010032658"
+  },
+  "applications": ["temira"],
+  "dto": "mapstruct",
+  "fields": [],
+  "name": "SleepDetector",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "vehicle",
+      "relationshipName": "vehicle",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "firstName",
+      "otherEntityName": "driver",
+      "relationshipName": "driver",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

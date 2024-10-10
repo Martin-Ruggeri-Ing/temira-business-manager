@@ -1,0 +1,172 @@
+<div>
+  <h2 id="page-heading" data-cy="VehicleHeading">
+    <span jhiTranslate="temiraApp.vehicle.home.title">Vehicles</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="temiraApp.vehicle.home.refreshListLabel">Refrescar lista</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-vehicle"
+        [routerLink]="['/vehicle/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="temiraApp.vehicle.home.createLabel">Crear nuevo Vehicle</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (vehicles?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="temiraApp.vehicle.home.notFound">Ningún Vehicles encontrado</span>
+    </div>
+  }
+
+  @if (vehicles && vehicles.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="model">
+              <div class="d-flex">
+                <span jhiTranslate="temiraApp.vehicle.model">Model</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span jhiTranslate="temiraApp.vehicle.type">Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="brand">
+              <div class="d-flex">
+                <span jhiTranslate="temiraApp.vehicle.brand">Brand</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="temiraApp.vehicle.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (vehicle of vehicles; track trackId(vehicle)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/vehicle', vehicle.id, 'view']">{{ vehicle.id }}</a>
+              </td>
+              <td>{{ vehicle.model }}</td>
+              <td [jhiTranslate]="'temiraApp.VehicleType.' + (vehicle.type ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    Camion: 'Camion',
+                    Autobus: 'Autobus',
+                    Tren: 'Tren',
+                    Casas: 'Casas',
+                    Rodantes: 'Rodantes',
+                    Furgon: 'Furgon',
+                    Camioneta: 'Camioneta',
+                    Auto: 'Auto',
+                  }[vehicle.type ?? 'null']
+                }}
+              </td>
+              <td [jhiTranslate]="'temiraApp.VehicleBrand.' + (vehicle.brand ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    Mercedes: 'Mercedes',
+                    Benz: 'Benz',
+                    Scania: 'Scania',
+                    Volvo: 'Volvo',
+                    Trucks: 'Trucks',
+                    Iveco: 'Iveco',
+                    Ford: 'Ford',
+                    Marcopolo: 'Marcopolo',
+                    Agrale: 'Agrale',
+                    Buses: 'Buses',
+                    Materfer: 'Materfer',
+                    Alstom: 'Alstom',
+                    CAF: 'CAF',
+                    Sprinter: 'Sprinter',
+                    Camper: 'Camper',
+                    Volkswagen: 'Volkswagen',
+                    Daily: 'Daily',
+                    Renault: 'Renault',
+                    Peugeot: 'Peugeot',
+                    Citroen: 'Citroen',
+                    Transit: 'Transit',
+                    Ranger: 'Ranger',
+                  }[vehicle.brand ?? 'null']
+                }}
+              </td>
+              <td>
+                {{ vehicle.user?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/vehicle', vehicle.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Vista</span>
+                  </a>
+
+                  <a [routerLink]="['/vehicle', vehicle.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editar</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(vehicle)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Eliminar</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (vehicles && vehicles.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>
