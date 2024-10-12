@@ -19,9 +19,10 @@ type VehicleFormDefaults = Pick<NewVehicle, 'id'>;
 type VehicleFormGroupContent = {
   id: FormControl<IVehicle['id'] | NewVehicle['id']>;
   model: FormControl<IVehicle['model']>;
+  name: FormControl<IVehicle['name']>;
+  user: FormControl<IVehicle['user']>;
   type: FormControl<IVehicle['type']>;
   brand: FormControl<IVehicle['brand']>;
-  user: FormControl<IVehicle['user']>;
 };
 
 export type VehicleFormGroup = FormGroup<VehicleFormGroupContent>;
@@ -44,9 +45,12 @@ export class VehicleFormService {
       model: new FormControl(vehicleRawValue.model, {
         validators: [Validators.required, Validators.min(1900), Validators.max(2100)],
       }),
+      name: new FormControl(vehicleRawValue.name, {
+        validators: [Validators.required],
+      }),
+      user: new FormControl(vehicleRawValue.user),
       type: new FormControl(vehicleRawValue.type),
       brand: new FormControl(vehicleRawValue.brand),
-      user: new FormControl(vehicleRawValue.user),
     });
   }
 

@@ -1,7 +1,8 @@
 package ar.edu.um.temira.domain;
 
-import static ar.edu.um.temira.domain.SleepDetectorTestSamples.*;
+import static ar.edu.um.temira.domain.VehicleBrandTestSamples.*;
 import static ar.edu.um.temira.domain.VehicleTestSamples.*;
+import static ar.edu.um.temira.domain.VehicleTypeTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ar.edu.um.temira.web.rest.TestUtil;
@@ -24,16 +25,26 @@ class VehicleTest {
     }
 
     @Test
-    void sleepDetectorTest() {
+    void typeTest() {
         Vehicle vehicle = getVehicleRandomSampleGenerator();
-        SleepDetector sleepDetectorBack = getSleepDetectorRandomSampleGenerator();
+        VehicleType vehicleTypeBack = getVehicleTypeRandomSampleGenerator();
 
-        vehicle.setSleepDetector(sleepDetectorBack);
-        assertThat(vehicle.getSleepDetector()).isEqualTo(sleepDetectorBack);
-        assertThat(sleepDetectorBack.getVehicle()).isEqualTo(vehicle);
+        vehicle.setType(vehicleTypeBack);
+        assertThat(vehicle.getType()).isEqualTo(vehicleTypeBack);
 
-        vehicle.sleepDetector(null);
-        assertThat(vehicle.getSleepDetector()).isNull();
-        assertThat(sleepDetectorBack.getVehicle()).isNull();
+        vehicle.type(null);
+        assertThat(vehicle.getType()).isNull();
+    }
+
+    @Test
+    void brandTest() {
+        Vehicle vehicle = getVehicleRandomSampleGenerator();
+        VehicleBrand vehicleBrandBack = getVehicleBrandRandomSampleGenerator();
+
+        vehicle.setBrand(vehicleBrandBack);
+        assertThat(vehicle.getBrand()).isEqualTo(vehicleBrandBack);
+
+        vehicle.brand(null);
+        assertThat(vehicle.getBrand()).isNull();
     }
 }

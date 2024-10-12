@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, NgZone, OnInit, WritableSignal, computed, inject, signal } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
@@ -7,14 +7,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective, SortService, type SortState, sortStateSignal } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
-import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
 
-import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
-import { ISleepDetector } from '../sleep-detector.model';
+import { ParseLinks } from 'app/core/util/parse-links.service';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { EntityArrayResponseType, SleepDetectorService } from '../service/sleep-detector.service';
 import { SleepDetectorDeleteDialogComponent } from '../delete/sleep-detector-delete-dialog.component';
+import { ISleepDetector } from '../sleep-detector.model';
 
 @Component({
   standalone: true,
@@ -29,7 +30,7 @@ import { SleepDetectorDeleteDialogComponent } from '../delete/sleep-detector-del
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-    ItemCountComponent,
+    InfiniteScrollDirective,
   ],
 })
 export class SleepDetectorComponent implements OnInit {
@@ -40,13 +41,15 @@ export class SleepDetectorComponent implements OnInit {
   sortState = sortStateSignal({});
 
   itemsPerPage = ITEMS_PER_PAGE;
-  totalItems = 0;
-  page = 1;
+  links: WritableSignal<Record<string, undefined | Record<string, string | undefined>>> = signal({});
+  hasMorePage = computed(() => !!this.links().next);
+  isFirstFetch = computed(() => Object.keys(this.links()).length === 0);
 
   public router = inject(Router);
   protected sleepDetectorService = inject(SleepDetectorService);
   protected activatedRoute = inject(ActivatedRoute);
   protected sortService = inject(SortService);
+  protected parseLinks = inject(ParseLinks);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
@@ -56,9 +59,18 @@ export class SleepDetectorComponent implements OnInit {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
+        tap(() => this.reset()),
         tap(() => this.load()),
       )
       .subscribe();
+  }
+
+  reset(): void {
+    this.sleepDetectors = [];
+  }
+
+  loadNextPage(): void {
+    this.load();
   }
 
   delete(sleepDetector: ISleepDetector): void {
@@ -82,16 +94,10 @@ export class SleepDetectorComponent implements OnInit {
   }
 
   navigateToWithComponentValues(event: SortState): void {
-    this.handleNavigation(this.page, event);
-  }
-
-  navigateToPage(page: number): void {
-    this.handleNavigation(page, this.sortState());
+    this.handleNavigation(event);
   }
 
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
-    const page = params.get(PAGE_HEADER);
-    this.page = +(page ?? 1);
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
@@ -102,31 +108,49 @@ export class SleepDetectorComponent implements OnInit {
   }
 
   protected fillComponentAttributesFromResponseBody(data: ISleepDetector[] | null): ISleepDetector[] {
+    // If there is previous link, data is a infinite scroll pagination content.
+    if (this.links().prev) {
+      const sleepDetectorsNew = this.sleepDetectors ?? [];
+      if (data) {
+        for (const d of data) {
+          if (sleepDetectorsNew.some(op => op.id === d.id)) {
+            sleepDetectorsNew.push(d);
+          }
+        }
+      }
+      return sleepDetectorsNew;
+    }
     return data ?? [];
   }
 
   protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
+    const linkHeader = headers.get('link');
+    if (linkHeader) {
+      this.links.set(this.parseLinks.parseAll(linkHeader));
+    } else {
+      this.links.set({});
+    }
   }
 
   protected queryBackend(): Observable<EntityArrayResponseType> {
-    const { page } = this;
-
     this.isLoading = true;
-    const pageToLoad: number = page;
     const queryObject: any = {
-      page: pageToLoad - 1,
       size: this.itemsPerPage,
       eagerload: true,
-      sort: this.sortService.buildSortParam(this.sortState()),
     };
+    if (this.hasMorePage()) {
+      Object.assign(queryObject, this.links().next);
+    } else if (this.isFirstFetch()) {
+      Object.assign(queryObject, { sort: this.sortService.buildSortParam(this.sortState()) });
+    }
+
     return this.sleepDetectorService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
-  protected handleNavigation(page: number, sortState: SortState): void {
+  protected handleNavigation(sortState: SortState): void {
+    this.links.set({});
+
     const queryParamsObj = {
-      page,
-      size: this.itemsPerPage,
       sort: this.sortService.buildSortParam(sortState),
     };
 

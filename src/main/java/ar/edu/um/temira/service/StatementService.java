@@ -1,80 +1,37 @@
 package ar.edu.um.temira.service;
 
-import ar.edu.um.temira.domain.Statement;
-import ar.edu.um.temira.repository.StatementRepository;
 import ar.edu.um.temira.service.dto.StatementDTO;
-import ar.edu.um.temira.service.mapper.StatementMapper;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link ar.edu.um.temira.domain.Statement}.
+ * Service Interface for managing {@link ar.edu.um.temira.domain.Statement}.
  */
-@Service
-@Transactional
-public class StatementService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(StatementService.class);
-
-    private final StatementRepository statementRepository;
-
-    private final StatementMapper statementMapper;
-
-    public StatementService(StatementRepository statementRepository, StatementMapper statementMapper) {
-        this.statementRepository = statementRepository;
-        this.statementMapper = statementMapper;
-    }
-
+public interface StatementService {
     /**
      * Save a statement.
      *
      * @param statementDTO the entity to save.
      * @return the persisted entity.
      */
-    public StatementDTO save(StatementDTO statementDTO) {
-        LOG.debug("Request to save Statement : {}", statementDTO);
-        Statement statement = statementMapper.toEntity(statementDTO);
-        statement = statementRepository.save(statement);
-        return statementMapper.toDto(statement);
-    }
+    StatementDTO save(StatementDTO statementDTO);
 
     /**
-     * Update a statement.
+     * Updates a statement.
      *
-     * @param statementDTO the entity to save.
+     * @param statementDTO the entity to update.
      * @return the persisted entity.
      */
-    public StatementDTO update(StatementDTO statementDTO) {
-        LOG.debug("Request to update Statement : {}", statementDTO);
-        Statement statement = statementMapper.toEntity(statementDTO);
-        statement = statementRepository.save(statement);
-        return statementMapper.toDto(statement);
-    }
+    StatementDTO update(StatementDTO statementDTO);
 
     /**
-     * Partially update a statement.
+     * Partially updates a statement.
      *
      * @param statementDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Optional<StatementDTO> partialUpdate(StatementDTO statementDTO) {
-        LOG.debug("Request to partially update Statement : {}", statementDTO);
-
-        return statementRepository
-            .findById(statementDTO.getId())
-            .map(existingStatement -> {
-                statementMapper.partialUpdate(existingStatement, statementDTO);
-
-                return existingStatement;
-            })
-            .map(statementRepository::save)
-            .map(statementMapper::toDto);
-    }
+    Optional<StatementDTO> partialUpdate(StatementDTO statementDTO);
 
     /**
      * Get all the statements.
@@ -82,31 +39,28 @@ public class StatementService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    @Transactional(readOnly = true)
-    public Page<StatementDTO> findAll(Pageable pageable) {
-        LOG.debug("Request to get all Statements");
-        return statementRepository.findAll(pageable).map(statementMapper::toDto);
-    }
+    Page<StatementDTO> findAll(Pageable pageable);
 
     /**
-     * Get one statement by id.
+     * Get all the statements with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Page<StatementDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
+     * Get the "id" statement.
      *
      * @param id the id of the entity.
      * @return the entity.
      */
-    @Transactional(readOnly = true)
-    public Optional<StatementDTO> findOne(Long id) {
-        LOG.debug("Request to get Statement : {}", id);
-        return statementRepository.findById(id).map(statementMapper::toDto);
-    }
+    Optional<StatementDTO> findOne(Long id);
 
     /**
-     * Delete the statement by id.
+     * Delete the "id" statement.
      *
      * @param id the id of the entity.
      */
-    public void delete(Long id) {
-        LOG.debug("Request to delete Statement : {}", id);
-        statementRepository.deleteById(id);
-    }
+    void delete(Long id);
 }

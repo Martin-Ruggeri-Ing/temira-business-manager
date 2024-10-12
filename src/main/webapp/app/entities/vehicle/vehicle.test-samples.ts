@@ -1,25 +1,26 @@
 import { IVehicle, NewVehicle } from './vehicle.model';
 
 export const sampleWithRequiredData: IVehicle = {
-  id: 13720,
-  model: 2045,
+  id: 16977,
+  model: 1905,
+  name: 'however whoa',
 };
 
 export const sampleWithPartialData: IVehicle = {
-  id: 23710,
-  model: 1907,
-  type: 'Casas',
+  id: 29126,
+  model: 1981,
+  name: 'authentic wetly',
 };
 
 export const sampleWithFullData: IVehicle = {
-  id: 7177,
-  model: 1997,
-  type: 'Furgon',
-  brand: 'Volkswagen',
+  id: 15908,
+  model: 2022,
+  name: 'embossing density kindly',
 };
 
 export const sampleWithNewData: NewVehicle = {
-  model: 1935,
+  model: 1966,
+  name: 'indeed',
   id: null,
 };
 

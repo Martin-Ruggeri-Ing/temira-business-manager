@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(classes = { TemiraApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class })
+@SpringBootTest(classes = { TemiraBusinessManagerApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class })
 @EmbeddedSQL
 public @interface IntegrationTest {
 }

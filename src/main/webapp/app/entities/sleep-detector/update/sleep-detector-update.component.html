@@ -4,7 +4,7 @@
       <h2
         id="jhi-sleep-detector-heading"
         data-cy="SleepDetectorCreateUpdateHeading"
-        jhiTranslate="temiraApp.sleepDetector.home.createOrEditLabel"
+        jhiTranslate="temiraBusinessManagerApp.sleepDetector.home.createOrEditLabel"
       >
         Crear o editar Sleep Detector
       </h2>
@@ -14,47 +14,26 @@
 
         @if (editForm.controls.id.value !== null) {
           <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="temiraApp.sleepDetector.id">ID</label>
+            <label class="form-label" for="field_id" jhiTranslate="temiraBusinessManagerApp.sleepDetector.id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
+        @let nameRef = editForm.get('name')!;
         <div class="mb-3">
-          <label class="form-label" for="field_vehicle" jhiTranslate="temiraApp.sleepDetector.vehicle">Vehicle</label>
-          <select
-            class="form-control"
-            id="field_vehicle"
-            data-cy="vehicle"
-            name="vehicle"
-            formControlName="vehicle"
-            [compareWith]="compareVehicle"
-          >
-            <option [ngValue]="null"></option>
-            @for (vehicleOption of vehiclesCollection; track $index) {
-              <option [ngValue]="vehicleOption">{{ vehicleOption.id }}</option>
-            }
-          </select>
+          <label class="form-label" for="field_name" jhiTranslate="temiraBusinessManagerApp.sleepDetector.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_driver" jhiTranslate="temiraApp.sleepDetector.driver">Driver</label>
-          <select
-            class="form-control"
-            id="field_driver"
-            data-cy="driver"
-            name="driver"
-            formControlName="driver"
-            [compareWith]="compareDriver"
-          >
-            <option [ngValue]="null"></option>
-            @for (driverOption of driversCollection; track $index) {
-              <option [ngValue]="driverOption">{{ driverOption.firstName }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_user" jhiTranslate="temiraApp.sleepDetector.user">User</label>
+          <label class="form-label" for="field_user" jhiTranslate="temiraBusinessManagerApp.sleepDetector.user">User</label>
           <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
             <option [ngValue]="null"></option>
             @for (userOption of usersSharedCollection; track $index) {

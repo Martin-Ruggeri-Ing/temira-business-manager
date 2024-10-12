@@ -1,20 +1,14 @@
 package ar.edu.um.temira.domain;
 
-import ar.edu.um.temira.domain.enumeration.VehicleBrand;
-import ar.edu.um.temira.domain.enumeration.VehicleType;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Vehicle.
  */
 @Entity
 @Table(name = "vehicle")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Vehicle implements Serializable {
 
@@ -31,20 +25,18 @@ public class Vehicle implements Serializable {
     @Column(name = "model", nullable = false)
     private Integer model;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private VehicleType type;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "brand")
-    private VehicleBrand brand;
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @JsonIgnoreProperties(value = { "vehicle", "driver", "user" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "vehicle")
-    private SleepDetector sleepDetector;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private VehicleType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private VehicleBrand brand;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -74,30 +66,17 @@ public class Vehicle implements Serializable {
         this.model = model;
     }
 
-    public VehicleType getType() {
-        return this.type;
+    public String getName() {
+        return this.name;
     }
 
-    public Vehicle type(VehicleType type) {
-        this.setType(type);
+    public Vehicle name(String name) {
+        this.setName(name);
         return this;
     }
 
-    public void setType(VehicleType type) {
-        this.type = type;
-    }
-
-    public VehicleBrand getBrand() {
-        return this.brand;
-    }
-
-    public Vehicle brand(VehicleBrand brand) {
-        this.setBrand(brand);
-        return this;
-    }
-
-    public void setBrand(VehicleBrand brand) {
-        this.brand = brand;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getUser() {
@@ -113,22 +92,29 @@ public class Vehicle implements Serializable {
         return this;
     }
 
-    public SleepDetector getSleepDetector() {
-        return this.sleepDetector;
+    public VehicleType getType() {
+        return this.type;
     }
 
-    public void setSleepDetector(SleepDetector sleepDetector) {
-        if (this.sleepDetector != null) {
-            this.sleepDetector.setVehicle(null);
-        }
-        if (sleepDetector != null) {
-            sleepDetector.setVehicle(this);
-        }
-        this.sleepDetector = sleepDetector;
+    public void setType(VehicleType vehicleType) {
+        this.type = vehicleType;
     }
 
-    public Vehicle sleepDetector(SleepDetector sleepDetector) {
-        this.setSleepDetector(sleepDetector);
+    public Vehicle type(VehicleType vehicleType) {
+        this.setType(vehicleType);
+        return this;
+    }
+
+    public VehicleBrand getBrand() {
+        return this.brand;
+    }
+
+    public void setBrand(VehicleBrand vehicleBrand) {
+        this.brand = vehicleBrand;
+    }
+
+    public Vehicle brand(VehicleBrand vehicleBrand) {
+        this.setBrand(vehicleBrand);
         return this;
     }
 
@@ -157,8 +143,7 @@ public class Vehicle implements Serializable {
         return "Vehicle{" +
             "id=" + getId() +
             ", model=" + getModel() +
-            ", type='" + getType() + "'" +
-            ", brand='" + getBrand() + "'" +
+            ", name='" + getName() + "'" +
             "}";
     }
 }

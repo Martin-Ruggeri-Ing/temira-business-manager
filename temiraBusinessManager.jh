@@ -1,0 +1,81 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType jwt
+    baseName temiraBusinessManager
+    buildTool maven
+    cacheProvider no
+    clientFramework angular
+    clientTheme darkly
+    clientThemeVariant primary
+    creationTimestamp 1728742292175
+    databaseType sql
+    devDatabaseType mysql
+    enableHibernateCache false
+    enableSwaggerCodegen true
+    enableTranslation true
+    jhipsterVersion "8.7.1"
+    jwtSecretKey "ZTkxZmNlNzUyNjA1Zjc4NTRlMmEDEFAULT_MIN_LENGTHNDVmMjdiOTEDEFAULT_MIN_LENGTHMTI4N2VmMWY1M2MDEFAULT_MIN_LENGTHZjlkOTEzYzc2MTY4ZTADEFAULT_MIN_LENGTHNThhNjFiYjUDEFAULT_MIN_LENGTHYmI4NGY4ZTZiNjI4NWUzZWFkMWVlZTUzMTZmYmU0Mjc4NzRiZThhMjUDEFAULT_MIN_LENGTHNjdlNGZlZDY5MTU0MGRmODdiMWM="
+    languages [es, en]
+    microfrontends []
+    nativeLanguage es
+    packageName ar.edu.um.temira
+    prodDatabaseType mysql
+    reactive false
+    searchEngine false
+    serviceDiscoveryType false
+    testFrameworks []
+    websocket false
+    withAdminUi true
+  }
+  entities *
+}
+
+DEFAULT_MIN_LENGTH = 3
+DEFAULT_MAX_LENGTH = 50
+
+entity VehicleType {
+    name String required
+}
+
+entity VehicleBrand {
+    name String required
+}
+
+entity Vehicle {
+    model Integer required min(1900) max(2100)
+    name String required
+}
+
+entity Driver {
+    firstName String required minlength(DEFAULT_MIN_LENGTH) maxlength(DEFAULT_MAX_LENGTH)
+    lastName String required minlength(DEFAULT_MIN_LENGTH) maxlength(DEFAULT_MAX_LENGTH)
+}
+
+entity SleepDetector {
+    name String required
+}
+
+entity Statement {
+    dateCreation Instant required
+    destination String required minlength(DEFAULT_MIN_LENGTH)
+    pathCsv String required minlength(DEFAULT_MIN_LENGTH)
+}
+
+// Relaciones
+relationship ManyToOne {
+    Vehicle{user(login)} to User with builtInEntity
+    Vehicle{type(name)} to VehicleType
+    Vehicle{brand(name)} to VehicleBrand
+    Driver{user(login)} to User with builtInEntity
+    SleepDetector{user(login)} to User with builtInEntity
+    Statement{sleepDetector(name)} to SleepDetector
+    Statement{vehicle(name)} to Vehicle
+    Statement{driver(firstName)} to Driver
+    Statement{user(login)} to User with builtInEntity
+}
+
+// Configuraciones a nivel de entidad
+dto * with mapstruct
+service * with serviceImpl
+paginate * with infinite-scroll

@@ -1,18 +1,14 @@
 package ar.edu.um.temira.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Driver.
  */
 @Entity
 @Table(name = "driver")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Driver implements Serializable {
 
@@ -24,21 +20,17 @@ public class Driver implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 3)
-    @Column(name = "first_name", nullable = false)
+    @Size(min = 3, max = 50)
+    @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
 
     @NotNull
-    @Size(min = 3)
-    @Column(name = "last_name", nullable = false)
+    @Size(min = 3, max = 50)
+    @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-
-    @JsonIgnoreProperties(value = { "vehicle", "driver", "user" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "driver")
-    private SleepDetector sleepDetector;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -91,25 +83,6 @@ public class Driver implements Serializable {
 
     public Driver user(User user) {
         this.setUser(user);
-        return this;
-    }
-
-    public SleepDetector getSleepDetector() {
-        return this.sleepDetector;
-    }
-
-    public void setSleepDetector(SleepDetector sleepDetector) {
-        if (this.sleepDetector != null) {
-            this.sleepDetector.setDriver(null);
-        }
-        if (sleepDetector != null) {
-            sleepDetector.setDriver(this);
-        }
-        this.sleepDetector = sleepDetector;
-    }
-
-    public Driver sleepDetector(SleepDetector sleepDetector) {
-        this.setSleepDetector(sleepDetector);
         return this;
     }
 

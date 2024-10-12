@@ -4,6 +4,8 @@ import ar.edu.um.temira.repository.SleepDetectorRepository;
 import ar.edu.um.temira.service.SleepDetectorService;
 import ar.edu.um.temira.service.dto.SleepDetectorDTO;
 import ar.edu.um.temira.web.rest.errors.BadRequestAlertException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -53,7 +55,8 @@ public class SleepDetectorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
-    public ResponseEntity<SleepDetectorDTO> createSleepDetector(@RequestBody SleepDetectorDTO sleepDetectorDTO) throws URISyntaxException {
+    public ResponseEntity<SleepDetectorDTO> createSleepDetector(@Valid @RequestBody SleepDetectorDTO sleepDetectorDTO)
+        throws URISyntaxException {
         LOG.debug("REST request to save SleepDetector : {}", sleepDetectorDTO);
         if (sleepDetectorDTO.getId() != null) {
             throw new BadRequestAlertException("A new sleepDetector cannot already have an ID", ENTITY_NAME, "idexists");
@@ -77,7 +80,7 @@ public class SleepDetectorResource {
     @PutMapping("/{id}")
     public ResponseEntity<SleepDetectorDTO> updateSleepDetector(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody SleepDetectorDTO sleepDetectorDTO
+        @Valid @RequestBody SleepDetectorDTO sleepDetectorDTO
     ) throws URISyntaxException {
         LOG.debug("REST request to update SleepDetector : {}, {}", id, sleepDetectorDTO);
         if (sleepDetectorDTO.getId() == null) {
@@ -111,7 +114,7 @@ public class SleepDetectorResource {
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<SleepDetectorDTO> partialUpdateSleepDetector(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody SleepDetectorDTO sleepDetectorDTO
+        @NotNull @RequestBody SleepDetectorDTO sleepDetectorDTO
     ) throws URISyntaxException {
         LOG.debug("REST request to partial update SleepDetector partially : {}, {}", id, sleepDetectorDTO);
         if (sleepDetectorDTO.getId() == null) {

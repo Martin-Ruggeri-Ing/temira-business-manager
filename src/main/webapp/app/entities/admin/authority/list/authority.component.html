@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="AuthorityHeading">
-    <span jhiTranslate="temiraApp.adminAuthority.home.title">Authorities</span>
+    <span jhiTranslate="temiraBusinessManagerApp.adminAuthority.home.title">Authorities</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="temiraApp.adminAuthority.home.refreshListLabel">Refrescar lista</span>
+        <span jhiTranslate="temiraBusinessManagerApp.adminAuthority.home.refreshListLabel">Refrescar lista</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/authority/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="temiraApp.adminAuthority.home.createLabel">Crear nuevo Authority</span>
+        <span jhiTranslate="temiraBusinessManagerApp.adminAuthority.home.createLabel">Crear nuevo Authority</span>
       </button>
     </div>
   </h2>
@@ -26,7 +26,7 @@
 
   @if (authorities?.length === 0) {
     <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="temiraApp.adminAuthority.home.notFound">Ningún Authorities encontrado</span>
+      <span jhiTranslate="temiraBusinessManagerApp.adminAuthority.home.notFound">Ningún Authorities encontrado</span>
     </div>
   }
 
@@ -37,7 +37,7 @@
           <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
             <th scope="col" jhiSortBy="name">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.adminAuthority.name">Name</span>
+                <span jhiTranslate="temiraBusinessManagerApp.adminAuthority.name">Name</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>

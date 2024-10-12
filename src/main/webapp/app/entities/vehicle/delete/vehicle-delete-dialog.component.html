@@ -6,7 +6,11 @@
 
     <div class="modal-body">
       <jhi-alert-error></jhi-alert-error>
-      <p id="jhi-delete-vehicle-heading" jhiTranslate="temiraApp.vehicle.delete.question" [translateValues]="{ id: vehicle.id }">
+      <p
+        id="jhi-delete-vehicle-heading"
+        jhiTranslate="temiraBusinessManagerApp.vehicle.delete.question"
+        [translateValues]="{ id: vehicle.id }"
+      >
         ¿Seguro que quiere eliminar Vehicle {{ vehicle.id }}?
       </p>
     </div>

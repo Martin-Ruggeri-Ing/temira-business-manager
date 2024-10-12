@@ -9,7 +9,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
-@AnalyzeClasses(packagesOf = TemiraApp.class, importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packagesOf = TemiraBusinessManagerApp.class, importOptions = DoNotIncludeTests.class)
 class TechnicalStructureTest {
 
     // prettier-ignore
@@ -30,7 +30,7 @@ class TechnicalStructureTest {
         .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Service", "Security", "Web", "Config")
         .whereLayer("Domain").mayOnlyBeAccessedByLayers("Persistence", "Service", "Security", "Web", "Config")
 
-        .ignoreDependency(belongToAnyOf(TemiraApp.class), alwaysTrue())
+        .ignoreDependency(belongToAnyOf(TemiraBusinessManagerApp.class), alwaysTrue())
         .ignoreDependency(alwaysTrue(), belongToAnyOf(
             ar.edu.um.temira.config.Constants.class,
             ar.edu.um.temira.config.ApplicationProperties.class

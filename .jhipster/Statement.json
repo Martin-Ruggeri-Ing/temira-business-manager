@@ -1,8 +1,8 @@
 {
   "annotations": {
-    "changelogDate": "20241010032758"
+    "changelogDate": "20241012202540"
   },
-  "applications": ["temira"],
+  "applications": ["temiraBusinessManager"],
   "dto": "mapstruct",
   "fields": [
     {
@@ -24,27 +24,38 @@
     }
   ],
   "name": "Statement",
-  "pagination": "pagination",
+  "pagination": "infinite-scroll",
   "relationships": [
     {
+      "otherEntityField": "name",
       "otherEntityName": "sleepDetector",
       "relationshipName": "sleepDetector",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     },
     {
+      "otherEntityField": "name",
       "otherEntityName": "vehicle",
       "relationshipName": "vehicle",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     },
     {
+      "otherEntityField": "firstName",
       "otherEntityName": "driver",
       "relationshipName": "driver",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
     }
   ],
   "searchEngine": "no",
-  "service": "serviceClass"
+  "service": "serviceImpl"
 }

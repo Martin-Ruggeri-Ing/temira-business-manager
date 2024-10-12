@@ -1,5 +1,5 @@
 {
-  "temiraApp": {
+  "temiraBusinessManagerApp": {
     "sleepDetector": {
       "home": {
         "title": "Sleep Detectors",
@@ -18,8 +18,7 @@
         "title": "Sleep Detector"
       },
       "id": "ID",
-      "vehicle": "Vehicle",
-      "driver": "Driver",
+      "name": "Name",
       "user": "User"
     }
   }

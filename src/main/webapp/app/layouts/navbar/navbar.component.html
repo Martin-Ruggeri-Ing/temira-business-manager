@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
-      <span class="navbar-title" jhiTranslate="global.title">Temira</span>
+      <span class="navbar-title" jhiTranslate="global.title">TemiraBusinessManager</span>
       <span class="navbar-version">{{ version }}</span>
     </a>
     <a
@@ -43,6 +43,30 @@
               </span>
             </a>
             <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/vehicle-type"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span jhiTranslate="global.menu.entities.vehicleType">Vehicle Type</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/vehicle-brand"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                  <span jhiTranslate="global.menu.entities.vehicleBrand">Vehicle Brand</span>
+                </a>
+              </li>
               <li>
                 <a
                   class="dropdown-item"

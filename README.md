@@ -1,4 +1,4 @@
-# temira
+# temiraBusinessManager
 
 This application was generated using JHipster 8.7.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.7.1](https://www.jhipster.tech/documentation-archive/v8.7.1).
 
@@ -123,7 +123,7 @@ update src/main/webapp/app/app.config.ts
 
 ### Packaging as jar
 
-To build the final jar and optimize the temira application for production, run:
+To build the final jar and optimize the temiraBusinessManager application for production, run:
 
 ```
 ./mvnw -Pprod clean verify

@@ -13,11 +13,11 @@ public class DriverDTO implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 3)
+    @Size(min = 3, max = 50)
     private String firstName;
 
     @NotNull
-    @Size(min = 3)
+    @Size(min = 3, max = 50)
     private String lastName;
 
     private UserDTO user;

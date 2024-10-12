@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="StatementHeading">
-    <span jhiTranslate="temiraApp.statement.home.title">Statements</span>
+    <span jhiTranslate="temiraBusinessManagerApp.statement.home.title">Statements</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="temiraApp.statement.home.refreshListLabel">Refrescar lista</span>
+        <span jhiTranslate="temiraBusinessManagerApp.statement.home.refreshListLabel">Refrescar lista</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/statement/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="temiraApp.statement.home.createLabel">Crear nuevo Statement</span>
+        <span jhiTranslate="temiraBusinessManagerApp.statement.home.createLabel">Crear nuevo Statement</span>
       </button>
     </div>
   </h2>
@@ -26,7 +26,7 @@
 
   @if (statements?.length === 0) {
     <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="temiraApp.statement.home.notFound">Ningún Statements encontrado</span>
+      <span jhiTranslate="temiraBusinessManagerApp.statement.home.notFound">Ningún Statements encontrado</span>
     </div>
   }
 
@@ -44,47 +44,53 @@
             </th>
             <th scope="col" jhiSortBy="dateCreation">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.statement.dateCreation">Date Creation</span>
+                <span jhiTranslate="temiraBusinessManagerApp.statement.dateCreation">Date Creation</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="destination">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.statement.destination">Destination</span>
+                <span jhiTranslate="temiraBusinessManagerApp.statement.destination">Destination</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="pathCsv">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.statement.pathCsv">Path Csv</span>
+                <span jhiTranslate="temiraBusinessManagerApp.statement.pathCsv">Path Csv</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="sleepDetector.id">
+            <th scope="col" jhiSortBy="sleepDetector.name">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.statement.sleepDetector">Sleep Detector</span>
+                <span jhiTranslate="temiraBusinessManagerApp.statement.sleepDetector">Sleep Detector</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vehicle.id">
+            <th scope="col" jhiSortBy="vehicle.name">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.statement.vehicle">Vehicle</span>
+                <span jhiTranslate="temiraBusinessManagerApp.statement.vehicle">Vehicle</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="driver.id">
+            <th scope="col" jhiSortBy="driver.firstName">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.statement.driver">Driver</span>
+                <span jhiTranslate="temiraBusinessManagerApp.statement.driver">Driver</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="temiraBusinessManagerApp.statement.user">User</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
           @for (statement of statements; track trackId(statement)) {
             <tr data-cy="entityTable">
               <td>
@@ -96,23 +102,26 @@
               <td>
                 @if (statement.sleepDetector) {
                   <div>
-                    <a [routerLink]="['/sleep-detector', statement.sleepDetector.id, 'view']">{{ statement.sleepDetector.id }}</a>
+                    <a [routerLink]="['/sleep-detector', statement.sleepDetector.id, 'view']">{{ statement.sleepDetector.name }}</a>
                   </div>
                 }
               </td>
               <td>
                 @if (statement.vehicle) {
                   <div>
-                    <a [routerLink]="['/vehicle', statement.vehicle.id, 'view']">{{ statement.vehicle.id }}</a>
+                    <a [routerLink]="['/vehicle', statement.vehicle.id, 'view']">{{ statement.vehicle.name }}</a>
                   </div>
                 }
               </td>
               <td>
                 @if (statement.driver) {
                   <div>
-                    <a [routerLink]="['/driver', statement.driver.id, 'view']">{{ statement.driver.id }}</a>
+                    <a [routerLink]="['/driver', statement.driver.id, 'view']">{{ statement.driver.firstName }}</a>
                   </div>
                 }
+              </td>
+              <td>
+                {{ statement.user?.login }}
               </td>
               <td class="text-end">
                 <div class="btn-group">
@@ -136,25 +145,6 @@
           }
         </tbody>
       </table>
-    </div>
-  }
-  @if (statements && statements.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
     </div>
   }
 </div>

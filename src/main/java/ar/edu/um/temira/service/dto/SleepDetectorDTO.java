@@ -1,5 +1,6 @@
 package ar.edu.um.temira.service.dto;
 
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,9 +12,8 @@ public class SleepDetectorDTO implements Serializable {
 
     private Long id;
 
-    private VehicleDTO vehicle;
-
-    private DriverDTO driver;
+    @NotNull
+    private String name;
 
     private UserDTO user;
 
@@ -25,20 +25,12 @@ public class SleepDetectorDTO implements Serializable {
         this.id = id;
     }
 
-    public VehicleDTO getVehicle() {
-        return vehicle;
+    public String getName() {
+        return name;
     }
 
-    public void setVehicle(VehicleDTO vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public DriverDTO getDriver() {
-        return driver;
-    }
-
-    public void setDriver(DriverDTO driver) {
-        this.driver = driver;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UserDTO getUser() {
@@ -75,8 +67,7 @@ public class SleepDetectorDTO implements Serializable {
     public String toString() {
         return "SleepDetectorDTO{" +
             "id=" + getId() +
-            ", vehicle=" + getVehicle() +
-            ", driver=" + getDriver() +
+            ", name='" + getName() + "'" +
             ", user=" + getUser() +
             "}";
     }

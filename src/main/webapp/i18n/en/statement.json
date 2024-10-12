@@ -1,5 +1,5 @@
 {
-  "temiraApp": {
+  "temiraBusinessManagerApp": {
     "statement": {
       "home": {
         "title": "Statements",
@@ -23,7 +23,8 @@
       "pathCsv": "Path Csv",
       "sleepDetector": "Sleep Detector",
       "vehicle": "Vehicle",
-      "driver": "Driver"
+      "driver": "Driver",
+      "user": "User"
     }
   }
 }

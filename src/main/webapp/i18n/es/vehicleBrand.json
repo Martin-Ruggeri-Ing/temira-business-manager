@@ -1,29 +1,24 @@
 {
-  "temiraApp": {
-    "VehicleBrand": {
-      "null": "",
-      "Mercedes": "Mercedes",
-      "Benz": "Benz",
-      "Scania": "Scania",
-      "Volvo": "Volvo",
-      "Trucks": "Trucks",
-      "Iveco": "Iveco",
-      "Ford": "Ford",
-      "Marcopolo": "Marcopolo",
-      "Agrale": "Agrale",
-      "Buses": "Buses",
-      "Materfer": "Materfer",
-      "Alstom": "Alstom",
-      "CAF": "CAF",
-      "Sprinter": "Sprinter",
-      "Camper": "Camper",
-      "Volkswagen": "Volkswagen",
-      "Daily": "Daily",
-      "Renault": "Renault",
-      "Peugeot": "Peugeot",
-      "Citroen": "Citroen",
-      "Transit": "Transit",
-      "Ranger": "Ranger"
+  "temiraBusinessManagerApp": {
+    "vehicleBrand": {
+      "home": {
+        "title": "Vehicle Brands",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Vehicle Brand",
+        "createOrEditLabel": "Crear o editar Vehicle Brand",
+        "notFound": "Ningún Vehicle Brands encontrado"
+      },
+      "created": "Un nuevo Vehicle Brand ha sido creado con el identificador {{ param }}",
+      "updated": "Un Vehicle Brand ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Vehicle Brand ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Vehicle Brand {{ id }}?"
+      },
+      "detail": {
+        "title": "Vehicle Brand"
+      },
+      "id": "ID",
+      "name": "Name"
     }
   }
 }

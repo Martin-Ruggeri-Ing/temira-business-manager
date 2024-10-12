@@ -15,7 +15,8 @@
 
 spring:
   application:
-    name: temira
+    name: temiraBusinessManager
+  cloud:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -36,13 +37,13 @@ spring:
           authorities-claim-name: auth
   task:
     execution:
-      thread-name-prefix: temira-task-
+      thread-name-prefix: temira-business-manager-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: temira-scheduling-
+      thread-name-prefix: temira-business-manager-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -59,9 +60,9 @@ server:
 # ===================================================================
 jhipster:
   clientApp:
-    name: 'temiraApp'
+    name: 'temiraBusinessManagerApp'
   mail:
-    from: temira@localhost.com
+    from: temiraBusinessManager@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
@@ -75,7 +76,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: ODhmYjUyNzdhMjNmYTViZDkxNGMwN2UzNmE3OTcwMmNjYzBkM2Y2MzQ4ZmY0Zjk1NTMyNGI4ZWNmYTJjOTliMGJhZjg4ZTYxZmRhZjNjMDcyNWE5MmQxZTVhZjdjNDJmMTEyY2JkNzMzY2VmNDVlNWQ4ODBlZDI5MTA0ZDUxMTc=
+        base64-secret: ZTkxZmNlNzUyNjA1Zjc4NTRlMmEDEFAULT_MIN_LENGTHNDVmMjdiOTEDEFAULT_MIN_LENGTHMTI4N2VmMWY1M2MDEFAULT_MIN_LENGTHZjlkOTEzYzc2MTY4ZTADEFAULT_MIN_LENGTHNThhNjFiYjUDEFAULT_MIN_LENGTHYmI4NGY4ZTZiNjI4NWUzZWFkMWVlZTUzMTZmYmU0Mjc4NzRiZThhMjUDEFAULT_MIN_LENGTHNjdlNGZlZDY5MTU0MGRmODdiMWM=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 86400

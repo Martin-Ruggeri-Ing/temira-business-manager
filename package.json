@@ -1,8 +1,8 @@
 {
-  "name": "temira",
+  "name": "temira-business-manager",
   "version": "0.0.1-SNAPSHOT",
   "private": true,
-  "description": "Description for Temira",
+  "description": "Description for Temira Business Manager",
   "license": "UNLICENSED",
   "type": "commonjs",
   "scripts": {

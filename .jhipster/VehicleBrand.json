@@ -1,0 +1,19 @@
+{
+  "annotations": {
+    "changelogDate": "20241012202536"
+  },
+  "applications": ["temiraBusinessManager"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "VehicleBrand",
+  "pagination": "infinite-scroll",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

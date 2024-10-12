@@ -30,14 +30,16 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     }
 
     @Query(
-        value = "select vehicle from Vehicle vehicle left join fetch vehicle.user",
+        value = "select vehicle from Vehicle vehicle left join fetch vehicle.user left join fetch vehicle.type left join fetch vehicle.brand",
         countQuery = "select count(vehicle) from Vehicle vehicle"
     )
     Page<Vehicle> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select vehicle from Vehicle vehicle left join fetch vehicle.user")
+    @Query("select vehicle from Vehicle vehicle left join fetch vehicle.user left join fetch vehicle.type left join fetch vehicle.brand")
     List<Vehicle> findAllWithToOneRelationships();
 
-    @Query("select vehicle from Vehicle vehicle left join fetch vehicle.user where vehicle.id =:id")
+    @Query(
+        "select vehicle from Vehicle vehicle left join fetch vehicle.user left join fetch vehicle.type left join fetch vehicle.brand where vehicle.id =:id"
+    )
     Optional<Vehicle> findOneWithToOneRelationships(@Param("id") Long id);
 }

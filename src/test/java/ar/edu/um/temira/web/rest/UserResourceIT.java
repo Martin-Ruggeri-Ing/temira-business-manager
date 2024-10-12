@@ -15,7 +15,6 @@ import ar.edu.um.temira.service.mapper.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.util.*;
-import java.util.Objects;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -23,8 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -74,9 +71,6 @@ class UserResourceIT {
     private EntityManager em;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private MockMvc restUserMockMvc;
 
     private User user;
@@ -124,12 +118,6 @@ class UserResourceIT {
 
     @AfterEach
     public void cleanupAndCheck() {
-        cacheManager
-            .getCacheNames()
-            .stream()
-            .map(cacheName -> this.cacheManager.getCache(cacheName))
-            .filter(Objects::nonNull)
-            .forEach(Cache::clear);
         userService.deleteUser(DEFAULT_LOGIN);
         userService.deleteUser(UPDATED_LOGIN);
         userService.deleteUser(user.getLogin());
@@ -274,8 +262,6 @@ class UserResourceIT {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
-        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
-
         // Get the user
         restUserMockMvc
             .perform(get("/api/admin/users/{login}", user.getLogin()))
@@ -287,8 +273,6 @@ class UserResourceIT {
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
             .andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
-
-        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNotNull();
     }
 
     @Test
@@ -471,8 +455,6 @@ class UserResourceIT {
         restUserMockMvc
             .perform(delete("/api/admin/users/{login}", user.getLogin()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
-
-        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
 
         // Validate the database is empty
         assertPersistedUsers(users -> assertThat(users).hasSize(databaseSizeBeforeDelete - 1));

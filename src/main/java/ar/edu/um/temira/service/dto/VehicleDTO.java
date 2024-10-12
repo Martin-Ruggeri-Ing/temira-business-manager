@@ -1,7 +1,5 @@
 package ar.edu.um.temira.service.dto;
 
-import ar.edu.um.temira.domain.enumeration.VehicleBrand;
-import ar.edu.um.temira.domain.enumeration.VehicleType;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,11 +17,14 @@ public class VehicleDTO implements Serializable {
     @Max(value = 2100)
     private Integer model;
 
-    private VehicleType type;
-
-    private VehicleBrand brand;
+    @NotNull
+    private String name;
 
     private UserDTO user;
+
+    private VehicleTypeDTO type;
+
+    private VehicleBrandDTO brand;
 
     public Long getId() {
         return id;
@@ -41,20 +42,12 @@ public class VehicleDTO implements Serializable {
         this.model = model;
     }
 
-    public VehicleType getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(VehicleType type) {
-        this.type = type;
-    }
-
-    public VehicleBrand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(VehicleBrand brand) {
-        this.brand = brand;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UserDTO getUser() {
@@ -63,6 +56,22 @@ public class VehicleDTO implements Serializable {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public VehicleTypeDTO getType() {
+        return type;
+    }
+
+    public void setType(VehicleTypeDTO type) {
+        this.type = type;
+    }
+
+    public VehicleBrandDTO getBrand() {
+        return brand;
+    }
+
+    public void setBrand(VehicleBrandDTO brand) {
+        this.brand = brand;
     }
 
     @Override
@@ -92,9 +101,10 @@ public class VehicleDTO implements Serializable {
         return "VehicleDTO{" +
             "id=" + getId() +
             ", model=" + getModel() +
-            ", type='" + getType() + "'" +
-            ", brand='" + getBrand() + "'" +
+            ", name='" + getName() + "'" +
             ", user=" + getUser() +
+            ", type=" + getType() +
+            ", brand=" + getBrand() +
             "}";
     }
 }

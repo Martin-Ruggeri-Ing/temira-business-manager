@@ -13,6 +13,8 @@ import { IVehicle } from 'app/entities/vehicle/vehicle.model';
 import { VehicleService } from 'app/entities/vehicle/service/vehicle.service';
 import { IDriver } from 'app/entities/driver/driver.model';
 import { DriverService } from 'app/entities/driver/service/driver.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { StatementService } from '../service/statement.service';
 import { IStatement } from '../statement.model';
 import { StatementFormGroup, StatementFormService } from './statement-form.service';
@@ -30,12 +32,14 @@ export class StatementUpdateComponent implements OnInit {
   sleepDetectorsSharedCollection: ISleepDetector[] = [];
   vehiclesSharedCollection: IVehicle[] = [];
   driversSharedCollection: IDriver[] = [];
+  usersSharedCollection: IUser[] = [];
 
   protected statementService = inject(StatementService);
   protected statementFormService = inject(StatementFormService);
   protected sleepDetectorService = inject(SleepDetectorService);
   protected vehicleService = inject(VehicleService);
   protected driverService = inject(DriverService);
+  protected userService = inject(UserService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -47,6 +51,8 @@ export class StatementUpdateComponent implements OnInit {
   compareVehicle = (o1: IVehicle | null, o2: IVehicle | null): boolean => this.vehicleService.compareVehicle(o1, o2);
 
   compareDriver = (o1: IDriver | null, o2: IDriver | null): boolean => this.driverService.compareDriver(o1, o2);
+
+  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ statement }) => {
@@ -108,6 +114,7 @@ export class StatementUpdateComponent implements OnInit {
       this.driversSharedCollection,
       statement.driver,
     );
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, statement.user);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -132,5 +139,11 @@ export class StatementUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IDriver[]>) => res.body ?? []))
       .pipe(map((drivers: IDriver[]) => this.driverService.addDriverToCollectionIfMissing<IDriver>(drivers, this.statement?.driver)))
       .subscribe((drivers: IDriver[]) => (this.driversSharedCollection = drivers));
+
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.statement?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 }

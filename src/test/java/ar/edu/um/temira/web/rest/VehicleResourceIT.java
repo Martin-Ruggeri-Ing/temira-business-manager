@@ -10,8 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ar.edu.um.temira.IntegrationTest;
 import ar.edu.um.temira.domain.Vehicle;
-import ar.edu.um.temira.domain.enumeration.VehicleBrand;
-import ar.edu.um.temira.domain.enumeration.VehicleType;
 import ar.edu.um.temira.repository.UserRepository;
 import ar.edu.um.temira.repository.VehicleRepository;
 import ar.edu.um.temira.service.VehicleService;
@@ -49,11 +47,8 @@ class VehicleResourceIT {
     private static final Integer DEFAULT_MODEL = 1900;
     private static final Integer UPDATED_MODEL = 1901;
 
-    private static final VehicleType DEFAULT_TYPE = VehicleType.Camion;
-    private static final VehicleType UPDATED_TYPE = VehicleType.Autobus;
-
-    private static final VehicleBrand DEFAULT_BRAND = VehicleBrand.Mercedes;
-    private static final VehicleBrand UPDATED_BRAND = VehicleBrand.Benz;
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/vehicles";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -96,7 +91,7 @@ class VehicleResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Vehicle createEntity() {
-        return new Vehicle().model(DEFAULT_MODEL).type(DEFAULT_TYPE).brand(DEFAULT_BRAND);
+        return new Vehicle().model(DEFAULT_MODEL).name(DEFAULT_NAME);
     }
 
     /**
@@ -106,7 +101,7 @@ class VehicleResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Vehicle createUpdatedEntity() {
-        return new Vehicle().model(UPDATED_MODEL).type(UPDATED_TYPE).brand(UPDATED_BRAND);
+        return new Vehicle().model(UPDATED_MODEL).name(UPDATED_NAME);
     }
 
     @BeforeEach
@@ -183,6 +178,23 @@ class VehicleResourceIT {
 
     @Test
     @Transactional
+    void checkNameIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        vehicle.setName(null);
+
+        // Create the Vehicle, which fails.
+        VehicleDTO vehicleDTO = vehicleMapper.toDto(vehicle);
+
+        restVehicleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(vehicleDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllVehicles() throws Exception {
         // Initialize the database
         insertedVehicle = vehicleRepository.saveAndFlush(vehicle);
@@ -194,8 +206,7 @@ class VehicleResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(vehicle.getId().intValue())))
             .andExpect(jsonPath("$.[*].model").value(hasItem(DEFAULT_MODEL)))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -228,8 +239,7 @@ class VehicleResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(vehicle.getId().intValue()))
             .andExpect(jsonPath("$.model").value(DEFAULT_MODEL))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
 
     @Test
@@ -251,7 +261,7 @@ class VehicleResourceIT {
         Vehicle updatedVehicle = vehicleRepository.findById(vehicle.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedVehicle are not directly saved in db
         em.detach(updatedVehicle);
-        updatedVehicle.model(UPDATED_MODEL).type(UPDATED_TYPE).brand(UPDATED_BRAND);
+        updatedVehicle.model(UPDATED_MODEL).name(UPDATED_NAME);
         VehicleDTO vehicleDTO = vehicleMapper.toDto(updatedVehicle);
 
         restVehicleMockMvc
@@ -337,7 +347,7 @@ class VehicleResourceIT {
         Vehicle partialUpdatedVehicle = new Vehicle();
         partialUpdatedVehicle.setId(vehicle.getId());
 
-        partialUpdatedVehicle.brand(UPDATED_BRAND);
+        partialUpdatedVehicle.name(UPDATED_NAME);
 
         restVehicleMockMvc
             .perform(
@@ -365,7 +375,7 @@ class VehicleResourceIT {
         Vehicle partialUpdatedVehicle = new Vehicle();
         partialUpdatedVehicle.setId(vehicle.getId());
 
-        partialUpdatedVehicle.model(UPDATED_MODEL).type(UPDATED_TYPE).brand(UPDATED_BRAND);
+        partialUpdatedVehicle.model(UPDATED_MODEL).name(UPDATED_NAME);
 
         restVehicleMockMvc
             .perform(

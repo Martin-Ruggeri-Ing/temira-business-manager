@@ -347,6 +347,8 @@ class DriverResourceIT {
         Driver partialUpdatedDriver = new Driver();
         partialUpdatedDriver.setId(driver.getId());
 
+        partialUpdatedDriver.lastName(UPDATED_LAST_NAME);
+
         restDriverMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDriver.getId())

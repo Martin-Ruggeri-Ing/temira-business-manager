@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="VehicleHeading">
-    <span jhiTranslate="temiraApp.vehicle.home.title">Vehicles</span>
+    <span jhiTranslate="temiraBusinessManagerApp.vehicle.home.title">Vehicles</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
-        <span jhiTranslate="temiraApp.vehicle.home.refreshListLabel">Refrescar lista</span>
+        <span jhiTranslate="temiraBusinessManagerApp.vehicle.home.refreshListLabel">Refrescar lista</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/vehicle/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="temiraApp.vehicle.home.createLabel">Crear nuevo Vehicle</span>
+        <span jhiTranslate="temiraBusinessManagerApp.vehicle.home.createLabel">Crear nuevo Vehicle</span>
       </button>
     </div>
   </h2>
@@ -26,7 +26,7 @@
 
   @if (vehicles?.length === 0) {
     <div class="alert alert-warning" id="no-result">
-      <span jhiTranslate="temiraApp.vehicle.home.notFound">Ningún Vehicles encontrado</span>
+      <span jhiTranslate="temiraBusinessManagerApp.vehicle.home.notFound">Ningún Vehicles encontrado</span>
     </div>
   }
 
@@ -44,87 +44,63 @@
             </th>
             <th scope="col" jhiSortBy="model">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.vehicle.model">Model</span>
+                <span jhiTranslate="temiraBusinessManagerApp.vehicle.model">Model</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="type">
+            <th scope="col" jhiSortBy="name">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.vehicle.type">Type</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="brand">
-              <div class="d-flex">
-                <span jhiTranslate="temiraApp.vehicle.brand">Brand</span>
+                <span jhiTranslate="temiraBusinessManagerApp.vehicle.name">Name</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="user.login">
               <div class="d-flex">
-                <span jhiTranslate="temiraApp.vehicle.user">User</span>
+                <span jhiTranslate="temiraBusinessManagerApp.vehicle.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type.name">
+              <div class="d-flex">
+                <span jhiTranslate="temiraBusinessManagerApp.vehicle.type">Type</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="brand.name">
+              <div class="d-flex">
+                <span jhiTranslate="temiraBusinessManagerApp.vehicle.brand">Brand</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
           @for (vehicle of vehicles; track trackId(vehicle)) {
             <tr data-cy="entityTable">
               <td>
                 <a [routerLink]="['/vehicle', vehicle.id, 'view']">{{ vehicle.id }}</a>
               </td>
               <td>{{ vehicle.model }}</td>
-              <td [jhiTranslate]="'temiraApp.VehicleType.' + (vehicle.type ?? 'null')">
-                {{
-                  {
-                    null: '',
-                    Camion: 'Camion',
-                    Autobus: 'Autobus',
-                    Tren: 'Tren',
-                    Casas: 'Casas',
-                    Rodantes: 'Rodantes',
-                    Furgon: 'Furgon',
-                    Camioneta: 'Camioneta',
-                    Auto: 'Auto',
-                  }[vehicle.type ?? 'null']
-                }}
-              </td>
-              <td [jhiTranslate]="'temiraApp.VehicleBrand.' + (vehicle.brand ?? 'null')">
-                {{
-                  {
-                    null: '',
-                    Mercedes: 'Mercedes',
-                    Benz: 'Benz',
-                    Scania: 'Scania',
-                    Volvo: 'Volvo',
-                    Trucks: 'Trucks',
-                    Iveco: 'Iveco',
-                    Ford: 'Ford',
-                    Marcopolo: 'Marcopolo',
-                    Agrale: 'Agrale',
-                    Buses: 'Buses',
-                    Materfer: 'Materfer',
-                    Alstom: 'Alstom',
-                    CAF: 'CAF',
-                    Sprinter: 'Sprinter',
-                    Camper: 'Camper',
-                    Volkswagen: 'Volkswagen',
-                    Daily: 'Daily',
-                    Renault: 'Renault',
-                    Peugeot: 'Peugeot',
-                    Citroen: 'Citroen',
-                    Transit: 'Transit',
-                    Ranger: 'Ranger',
-                  }[vehicle.brand ?? 'null']
-                }}
-              </td>
+              <td>{{ vehicle.name }}</td>
               <td>
                 {{ vehicle.user?.login }}
+              </td>
+              <td>
+                @if (vehicle.type) {
+                  <div>
+                    <a [routerLink]="['/vehicle-type', vehicle.type.id, 'view']">{{ vehicle.type.name }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (vehicle.brand) {
+                  <div>
+                    <a [routerLink]="['/vehicle-brand', vehicle.brand.id, 'view']">{{ vehicle.brand.name }}</a>
+                  </div>
+                }
               </td>
               <td class="text-end">
                 <div class="btn-group">
@@ -148,25 +124,6 @@
           }
         </tbody>
       </table>
-    </div>
-  }
-  @if (vehicles && vehicles.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
     </div>
   }
 </div>

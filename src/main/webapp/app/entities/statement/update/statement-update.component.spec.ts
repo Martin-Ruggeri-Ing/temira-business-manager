@@ -10,6 +10,8 @@ import { IVehicle } from 'app/entities/vehicle/vehicle.model';
 import { VehicleService } from 'app/entities/vehicle/service/vehicle.service';
 import { IDriver } from 'app/entities/driver/driver.model';
 import { DriverService } from 'app/entities/driver/service/driver.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { IStatement } from '../statement.model';
 import { StatementService } from '../service/statement.service';
 import { StatementFormService } from './statement-form.service';
@@ -25,6 +27,7 @@ describe('Statement Management Update Component', () => {
   let sleepDetectorService: SleepDetectorService;
   let vehicleService: VehicleService;
   let driverService: DriverService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -50,6 +53,7 @@ describe('Statement Management Update Component', () => {
     sleepDetectorService = TestBed.inject(SleepDetectorService);
     vehicleService = TestBed.inject(VehicleService);
     driverService = TestBed.inject(DriverService);
+    userService = TestBed.inject(UserService);
 
     comp = fixture.componentInstance;
   });
@@ -57,10 +61,10 @@ describe('Statement Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call SleepDetector query and add missing value', () => {
       const statement: IStatement = { id: 456 };
-      const sleepDetector: ISleepDetector = { id: 22878 };
+      const sleepDetector: ISleepDetector = { id: 17322 };
       statement.sleepDetector = sleepDetector;
 
-      const sleepDetectorCollection: ISleepDetector[] = [{ id: 24965 }];
+      const sleepDetectorCollection: ISleepDetector[] = [{ id: 5499 }];
       jest.spyOn(sleepDetectorService, 'query').mockReturnValue(of(new HttpResponse({ body: sleepDetectorCollection })));
       const additionalSleepDetectors = [sleepDetector];
       const expectedCollection: ISleepDetector[] = [...additionalSleepDetectors, ...sleepDetectorCollection];
@@ -79,10 +83,10 @@ describe('Statement Management Update Component', () => {
 
     it('Should call Vehicle query and add missing value', () => {
       const statement: IStatement = { id: 456 };
-      const vehicle: IVehicle = { id: 29605 };
+      const vehicle: IVehicle = { id: 27393 };
       statement.vehicle = vehicle;
 
-      const vehicleCollection: IVehicle[] = [{ id: 11848 }];
+      const vehicleCollection: IVehicle[] = [{ id: 3983 }];
       jest.spyOn(vehicleService, 'query').mockReturnValue(of(new HttpResponse({ body: vehicleCollection })));
       const additionalVehicles = [vehicle];
       const expectedCollection: IVehicle[] = [...additionalVehicles, ...vehicleCollection];
@@ -101,10 +105,10 @@ describe('Statement Management Update Component', () => {
 
     it('Should call Driver query and add missing value', () => {
       const statement: IStatement = { id: 456 };
-      const driver: IDriver = { id: 11263 };
+      const driver: IDriver = { id: 31492 };
       statement.driver = driver;
 
-      const driverCollection: IDriver[] = [{ id: 12201 }];
+      const driverCollection: IDriver[] = [{ id: 25247 }];
       jest.spyOn(driverService, 'query').mockReturnValue(of(new HttpResponse({ body: driverCollection })));
       const additionalDrivers = [driver];
       const expectedCollection: IDriver[] = [...additionalDrivers, ...driverCollection];
@@ -121,14 +125,38 @@ describe('Statement Management Update Component', () => {
       expect(comp.driversSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call User query and add missing value', () => {
+      const statement: IStatement = { id: 456 };
+      const user: IUser = { id: 17959 };
+      statement.user = user;
+
+      const userCollection: IUser[] = [{ id: 21651 }];
+      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
+      const additionalUsers = [user];
+      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ statement });
+      comp.ngOnInit();
+
+      expect(userService.query).toHaveBeenCalled();
+      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(
+        userCollection,
+        ...additionalUsers.map(expect.objectContaining),
+      );
+      expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const statement: IStatement = { id: 456 };
-      const sleepDetector: ISleepDetector = { id: 20378 };
+      const sleepDetector: ISleepDetector = { id: 28307 };
       statement.sleepDetector = sleepDetector;
-      const vehicle: IVehicle = { id: 3908 };
+      const vehicle: IVehicle = { id: 23352 };
       statement.vehicle = vehicle;
-      const driver: IDriver = { id: 22322 };
+      const driver: IDriver = { id: 4207 };
       statement.driver = driver;
+      const user: IUser = { id: 25512 };
+      statement.user = user;
 
       activatedRoute.data = of({ statement });
       comp.ngOnInit();
@@ -136,6 +164,7 @@ describe('Statement Management Update Component', () => {
       expect(comp.sleepDetectorsSharedCollection).toContain(sleepDetector);
       expect(comp.vehiclesSharedCollection).toContain(vehicle);
       expect(comp.driversSharedCollection).toContain(driver);
+      expect(comp.usersSharedCollection).toContain(user);
       expect(comp.statement).toEqual(statement);
     });
   });
@@ -236,6 +265,16 @@ describe('Statement Management Update Component', () => {
         jest.spyOn(driverService, 'compareDriver');
         comp.compareDriver(entity, entity2);
         expect(driverService.compareDriver).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareUser', () => {
+      it('Should forward to userService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(userService, 'compareUser');
+        comp.compareUser(entity, entity2);
+        expect(userService.compareUser).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

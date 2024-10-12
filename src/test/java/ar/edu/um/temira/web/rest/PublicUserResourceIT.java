@@ -9,15 +9,12 @@ import ar.edu.um.temira.domain.User;
 import ar.edu.um.temira.repository.UserRepository;
 import ar.edu.um.temira.security.AuthoritiesConstants;
 import ar.edu.um.temira.service.UserService;
-import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,9 +35,6 @@ class PublicUserResourceIT {
     private UserService userService;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private MockMvc restUserMockMvc;
 
     private User user;
@@ -58,12 +52,6 @@ class PublicUserResourceIT {
 
     @AfterEach
     public void cleanupAndCheck() {
-        cacheManager
-            .getCacheNames()
-            .stream()
-            .map(cacheName -> this.cacheManager.getCache(cacheName))
-            .filter(Objects::nonNull)
-            .forEach(Cache::clear);
         userService.deleteUser(user.getLogin());
         assertThat(userRepository.count()).isEqualTo(numberOfUsers);
         numberOfUsers = null;

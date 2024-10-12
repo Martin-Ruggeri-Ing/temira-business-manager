@@ -21,9 +21,10 @@ describe('Vehicle Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             model: expect.any(Object),
+            name: expect.any(Object),
+            user: expect.any(Object),
             type: expect.any(Object),
             brand: expect.any(Object),
-            user: expect.any(Object),
           }),
         );
       });
@@ -35,9 +36,10 @@ describe('Vehicle Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             model: expect.any(Object),
+            name: expect.any(Object),
+            user: expect.any(Object),
             type: expect.any(Object),
             brand: expect.any(Object),
-            user: expect.any(Object),
           }),
         );
       });

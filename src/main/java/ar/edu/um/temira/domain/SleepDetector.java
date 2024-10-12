@@ -1,17 +1,14 @@
 package ar.edu.um.temira.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A SleepDetector.
  */
 @Entity
 @Table(name = "sleep_detector")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class SleepDetector implements Serializable {
 
@@ -22,15 +19,9 @@ public class SleepDetector implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @JsonIgnoreProperties(value = { "user", "sleepDetector" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(unique = true)
-    private Vehicle vehicle;
-
-    @JsonIgnoreProperties(value = { "user", "sleepDetector" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(unique = true)
-    private Driver driver;
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -50,30 +41,17 @@ public class SleepDetector implements Serializable {
         this.id = id;
     }
 
-    public Vehicle getVehicle() {
-        return this.vehicle;
+    public String getName() {
+        return this.name;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
-
-    public SleepDetector vehicle(Vehicle vehicle) {
-        this.setVehicle(vehicle);
+    public SleepDetector name(String name) {
+        this.setName(name);
         return this;
     }
 
-    public Driver getDriver() {
-        return this.driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public SleepDetector driver(Driver driver) {
-        this.setDriver(driver);
-        return this;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getUser() {
@@ -113,6 +91,7 @@ public class SleepDetector implements Serializable {
     public String toString() {
         return "SleepDetector{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             "}";
     }
 }

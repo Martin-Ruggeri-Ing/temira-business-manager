@@ -18,8 +18,7 @@ type SleepDetectorFormDefaults = Pick<NewSleepDetector, 'id'>;
 
 type SleepDetectorFormGroupContent = {
   id: FormControl<ISleepDetector['id'] | NewSleepDetector['id']>;
-  vehicle: FormControl<ISleepDetector['vehicle']>;
-  driver: FormControl<ISleepDetector['driver']>;
+  name: FormControl<ISleepDetector['name']>;
   user: FormControl<ISleepDetector['user']>;
 };
 
@@ -40,8 +39,9 @@ export class SleepDetectorFormService {
           validators: [Validators.required],
         },
       ),
-      vehicle: new FormControl(sleepDetectorRawValue.vehicle),
-      driver: new FormControl(sleepDetectorRawValue.driver),
+      name: new FormControl(sleepDetectorRawValue.name, {
+        validators: [Validators.required],
+      }),
       user: new FormControl(sleepDetectorRawValue.user),
     });
   }

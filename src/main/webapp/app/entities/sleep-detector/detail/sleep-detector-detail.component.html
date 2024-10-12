@@ -2,7 +2,9 @@
   <div class="col-8">
     @if (sleepDetector(); as sleepDetectorRef) {
       <div>
-        <h2 data-cy="sleepDetectorDetailsHeading"><span jhiTranslate="temiraApp.sleepDetector.detail.title">Sleep Detector</span></h2>
+        <h2 data-cy="sleepDetectorDetailsHeading">
+          <span jhiTranslate="temiraBusinessManagerApp.sleepDetector.detail.title">Sleep Detector</span>
+        </h2>
 
         <hr />
 
@@ -15,23 +17,11 @@
           <dd>
             <span>{{ sleepDetectorRef.id }}</span>
           </dd>
-          <dt><span jhiTranslate="temiraApp.sleepDetector.vehicle">Vehicle</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.sleepDetector.name">Name</span></dt>
           <dd>
-            @if (sleepDetector()!.vehicle) {
-              <div>
-                <a [routerLink]="['/vehicle', sleepDetector()!.vehicle?.id, 'view']">{{ sleepDetectorRef.vehicle?.id }}</a>
-              </div>
-            }
+            <span>{{ sleepDetectorRef.name }}</span>
           </dd>
-          <dt><span jhiTranslate="temiraApp.sleepDetector.driver">Driver</span></dt>
-          <dd>
-            @if (sleepDetector()!.driver) {
-              <div>
-                <a [routerLink]="['/driver', sleepDetector()!.driver?.id, 'view']">{{ sleepDetectorRef.driver?.firstName }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="temiraApp.sleepDetector.user">User</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.sleepDetector.user">User</span></dt>
           <dd>
             <span>{{ sleepDetectorRef.user?.login }}</span>
           </dd>

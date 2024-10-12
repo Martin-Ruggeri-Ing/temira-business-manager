@@ -30,16 +30,14 @@ public interface SleepDetectorRepository extends JpaRepository<SleepDetector, Lo
     }
 
     @Query(
-        value = "select sleepDetector from SleepDetector sleepDetector left join fetch sleepDetector.driver left join fetch sleepDetector.user",
+        value = "select sleepDetector from SleepDetector sleepDetector left join fetch sleepDetector.user",
         countQuery = "select count(sleepDetector) from SleepDetector sleepDetector"
     )
     Page<SleepDetector> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select sleepDetector from SleepDetector sleepDetector left join fetch sleepDetector.driver left join fetch sleepDetector.user")
+    @Query("select sleepDetector from SleepDetector sleepDetector left join fetch sleepDetector.user")
     List<SleepDetector> findAllWithToOneRelationships();
 
-    @Query(
-        "select sleepDetector from SleepDetector sleepDetector left join fetch sleepDetector.driver left join fetch sleepDetector.user where sleepDetector.id =:id"
-    )
+    @Query("select sleepDetector from SleepDetector sleepDetector left join fetch sleepDetector.user where sleepDetector.id =:id")
     Optional<SleepDetector> findOneWithToOneRelationships(@Param("id") Long id);
 }

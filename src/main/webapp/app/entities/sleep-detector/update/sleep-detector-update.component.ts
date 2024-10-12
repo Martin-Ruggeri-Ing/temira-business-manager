@@ -7,14 +7,10 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IVehicle } from 'app/entities/vehicle/vehicle.model';
-import { VehicleService } from 'app/entities/vehicle/service/vehicle.service';
-import { IDriver } from 'app/entities/driver/driver.model';
-import { DriverService } from 'app/entities/driver/service/driver.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
-import { SleepDetectorService } from '../service/sleep-detector.service';
 import { ISleepDetector } from '../sleep-detector.model';
+import { SleepDetectorService } from '../service/sleep-detector.service';
 import { SleepDetectorFormGroup, SleepDetectorFormService } from './sleep-detector-form.service';
 
 @Component({
@@ -27,23 +23,15 @@ export class SleepDetectorUpdateComponent implements OnInit {
   isSaving = false;
   sleepDetector: ISleepDetector | null = null;
 
-  vehiclesCollection: IVehicle[] = [];
-  driversCollection: IDriver[] = [];
   usersSharedCollection: IUser[] = [];
 
   protected sleepDetectorService = inject(SleepDetectorService);
   protected sleepDetectorFormService = inject(SleepDetectorFormService);
-  protected vehicleService = inject(VehicleService);
-  protected driverService = inject(DriverService);
   protected userService = inject(UserService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: SleepDetectorFormGroup = this.sleepDetectorFormService.createSleepDetectorFormGroup();
-
-  compareVehicle = (o1: IVehicle | null, o2: IVehicle | null): boolean => this.vehicleService.compareVehicle(o1, o2);
-
-  compareDriver = (o1: IDriver | null, o2: IDriver | null): boolean => this.driverService.compareDriver(o1, o2);
 
   compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
@@ -95,26 +83,10 @@ export class SleepDetectorUpdateComponent implements OnInit {
     this.sleepDetector = sleepDetector;
     this.sleepDetectorFormService.resetForm(this.editForm, sleepDetector);
 
-    this.vehiclesCollection = this.vehicleService.addVehicleToCollectionIfMissing<IVehicle>(this.vehiclesCollection, sleepDetector.vehicle);
-    this.driversCollection = this.driverService.addDriverToCollectionIfMissing<IDriver>(this.driversCollection, sleepDetector.driver);
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, sleepDetector.user);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.vehicleService
-      .query({ filter: 'sleepdetector-is-null' })
-      .pipe(map((res: HttpResponse<IVehicle[]>) => res.body ?? []))
-      .pipe(
-        map((vehicles: IVehicle[]) => this.vehicleService.addVehicleToCollectionIfMissing<IVehicle>(vehicles, this.sleepDetector?.vehicle)),
-      )
-      .subscribe((vehicles: IVehicle[]) => (this.vehiclesCollection = vehicles));
-
-    this.driverService
-      .query({ filter: 'sleepdetector-is-null' })
-      .pipe(map((res: HttpResponse<IDriver[]>) => res.body ?? []))
-      .pipe(map((drivers: IDriver[]) => this.driverService.addDriverToCollectionIfMissing<IDriver>(drivers, this.sleepDetector?.driver)))
-      .subscribe((drivers: IDriver[]) => (this.driversCollection = drivers));
-
     this.userService
       .query()
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))

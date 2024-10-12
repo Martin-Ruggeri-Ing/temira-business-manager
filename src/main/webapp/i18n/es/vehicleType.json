@@ -1,15 +1,24 @@
 {
-  "temiraApp": {
-    "VehicleType": {
-      "null": "",
-      "Camion": "Camion",
-      "Autobus": "Autobus",
-      "Tren": "Tren",
-      "Casas": "Casas",
-      "Rodantes": "Rodantes",
-      "Furgon": "Furgon",
-      "Camioneta": "Camioneta",
-      "Auto": "Auto"
+  "temiraBusinessManagerApp": {
+    "vehicleType": {
+      "home": {
+        "title": "Vehicle Types",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Vehicle Type",
+        "createOrEditLabel": "Crear o editar Vehicle Type",
+        "notFound": "Ningún Vehicle Types encontrado"
+      },
+      "created": "Un nuevo Vehicle Type ha sido creado con el identificador {{ param }}",
+      "updated": "Un Vehicle Type ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Vehicle Type ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Vehicle Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Vehicle Type"
+      },
+      "id": "ID",
+      "name": "Name"
     }
   }
 }

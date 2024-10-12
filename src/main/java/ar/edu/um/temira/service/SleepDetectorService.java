@@ -1,80 +1,37 @@
 package ar.edu.um.temira.service;
 
-import ar.edu.um.temira.domain.SleepDetector;
-import ar.edu.um.temira.repository.SleepDetectorRepository;
 import ar.edu.um.temira.service.dto.SleepDetectorDTO;
-import ar.edu.um.temira.service.mapper.SleepDetectorMapper;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link ar.edu.um.temira.domain.SleepDetector}.
+ * Service Interface for managing {@link ar.edu.um.temira.domain.SleepDetector}.
  */
-@Service
-@Transactional
-public class SleepDetectorService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(SleepDetectorService.class);
-
-    private final SleepDetectorRepository sleepDetectorRepository;
-
-    private final SleepDetectorMapper sleepDetectorMapper;
-
-    public SleepDetectorService(SleepDetectorRepository sleepDetectorRepository, SleepDetectorMapper sleepDetectorMapper) {
-        this.sleepDetectorRepository = sleepDetectorRepository;
-        this.sleepDetectorMapper = sleepDetectorMapper;
-    }
-
+public interface SleepDetectorService {
     /**
      * Save a sleepDetector.
      *
      * @param sleepDetectorDTO the entity to save.
      * @return the persisted entity.
      */
-    public SleepDetectorDTO save(SleepDetectorDTO sleepDetectorDTO) {
-        LOG.debug("Request to save SleepDetector : {}", sleepDetectorDTO);
-        SleepDetector sleepDetector = sleepDetectorMapper.toEntity(sleepDetectorDTO);
-        sleepDetector = sleepDetectorRepository.save(sleepDetector);
-        return sleepDetectorMapper.toDto(sleepDetector);
-    }
+    SleepDetectorDTO save(SleepDetectorDTO sleepDetectorDTO);
 
     /**
-     * Update a sleepDetector.
+     * Updates a sleepDetector.
      *
-     * @param sleepDetectorDTO the entity to save.
+     * @param sleepDetectorDTO the entity to update.
      * @return the persisted entity.
      */
-    public SleepDetectorDTO update(SleepDetectorDTO sleepDetectorDTO) {
-        LOG.debug("Request to update SleepDetector : {}", sleepDetectorDTO);
-        SleepDetector sleepDetector = sleepDetectorMapper.toEntity(sleepDetectorDTO);
-        sleepDetector = sleepDetectorRepository.save(sleepDetector);
-        return sleepDetectorMapper.toDto(sleepDetector);
-    }
+    SleepDetectorDTO update(SleepDetectorDTO sleepDetectorDTO);
 
     /**
-     * Partially update a sleepDetector.
+     * Partially updates a sleepDetector.
      *
      * @param sleepDetectorDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Optional<SleepDetectorDTO> partialUpdate(SleepDetectorDTO sleepDetectorDTO) {
-        LOG.debug("Request to partially update SleepDetector : {}", sleepDetectorDTO);
-
-        return sleepDetectorRepository
-            .findById(sleepDetectorDTO.getId())
-            .map(existingSleepDetector -> {
-                sleepDetectorMapper.partialUpdate(existingSleepDetector, sleepDetectorDTO);
-
-                return existingSleepDetector;
-            })
-            .map(sleepDetectorRepository::save)
-            .map(sleepDetectorMapper::toDto);
-    }
+    Optional<SleepDetectorDTO> partialUpdate(SleepDetectorDTO sleepDetectorDTO);
 
     /**
      * Get all the sleepDetectors.
@@ -82,40 +39,28 @@ public class SleepDetectorService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    @Transactional(readOnly = true)
-    public Page<SleepDetectorDTO> findAll(Pageable pageable) {
-        LOG.debug("Request to get all SleepDetectors");
-        return sleepDetectorRepository.findAll(pageable).map(sleepDetectorMapper::toDto);
-    }
+    Page<SleepDetectorDTO> findAll(Pageable pageable);
 
     /**
      * Get all the sleepDetectors with eager load of many-to-many relationships.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    public Page<SleepDetectorDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return sleepDetectorRepository.findAllWithEagerRelationships(pageable).map(sleepDetectorMapper::toDto);
-    }
+    Page<SleepDetectorDTO> findAllWithEagerRelationships(Pageable pageable);
 
     /**
-     * Get one sleepDetector by id.
+     * Get the "id" sleepDetector.
      *
      * @param id the id of the entity.
      * @return the entity.
      */
-    @Transactional(readOnly = true)
-    public Optional<SleepDetectorDTO> findOne(Long id) {
-        LOG.debug("Request to get SleepDetector : {}", id);
-        return sleepDetectorRepository.findOneWithEagerRelationships(id).map(sleepDetectorMapper::toDto);
-    }
+    Optional<SleepDetectorDTO> findOne(Long id);
 
     /**
-     * Delete the sleepDetector by id.
+     * Delete the "id" sleepDetector.
      *
      * @param id the id of the entity.
      */
-    public void delete(Long id) {
-        LOG.debug("Request to delete SleepDetector : {}", id);
-        sleepDetectorRepository.deleteById(id);
-    }
+    void delete(Long id);
 }

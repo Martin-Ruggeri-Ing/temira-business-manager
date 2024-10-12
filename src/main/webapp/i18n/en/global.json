@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Temira",
+    "title": "TemiraBusinessManager",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
@@ -9,6 +9,8 @@
         "main": "Entities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "adminAuthority": "Authority",
+        "vehicleType": "Vehicle Type",
+        "vehicleBrand": "Vehicle Brand",
         "vehicle": "Vehicle",
         "driver": "Driver",
         "sleepDetector": "Sleep Detector",

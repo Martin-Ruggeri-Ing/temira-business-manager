@@ -1,7 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-statement-heading" data-cy="StatementCreateUpdateHeading" jhiTranslate="temiraApp.statement.home.createOrEditLabel">
+      <h2
+        id="jhi-statement-heading"
+        data-cy="StatementCreateUpdateHeading"
+        jhiTranslate="temiraBusinessManagerApp.statement.home.createOrEditLabel"
+      >
         Crear o editar Statement
       </h2>
 
@@ -10,14 +14,16 @@
 
         @if (editForm.controls.id.value !== null) {
           <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="temiraApp.statement.id">ID</label>
+            <label class="form-label" for="field_id" jhiTranslate="temiraBusinessManagerApp.statement.id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
         @let dateCreationRef = editForm.get('dateCreation')!;
         <div class="mb-3">
-          <label class="form-label" for="field_dateCreation" jhiTranslate="temiraApp.statement.dateCreation">Date Creation</label>
+          <label class="form-label" for="field_dateCreation" jhiTranslate="temiraBusinessManagerApp.statement.dateCreation"
+            >Date Creation</label
+          >
           <div class="d-flex">
             <input
               id="field_dateCreation"
@@ -46,7 +52,9 @@
 
         @let destinationRef = editForm.get('destination')!;
         <div class="mb-3">
-          <label class="form-label" for="field_destination" jhiTranslate="temiraApp.statement.destination">Destination</label>
+          <label class="form-label" for="field_destination" jhiTranslate="temiraBusinessManagerApp.statement.destination"
+            >Destination</label
+          >
           <input
             type="text"
             class="form-control"
@@ -71,7 +79,7 @@
 
         @let pathCsvRef = editForm.get('pathCsv')!;
         <div class="mb-3">
-          <label class="form-label" for="field_pathCsv" jhiTranslate="temiraApp.statement.pathCsv">Path Csv</label>
+          <label class="form-label" for="field_pathCsv" jhiTranslate="temiraBusinessManagerApp.statement.pathCsv">Path Csv</label>
           <input type="text" class="form-control" name="pathCsv" id="field_pathCsv" data-cy="pathCsv" formControlName="pathCsv" />
           @if (pathCsvRef.invalid && (pathCsvRef.dirty || pathCsvRef.touched)) {
             <div>
@@ -88,7 +96,9 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_sleepDetector" jhiTranslate="temiraApp.statement.sleepDetector">Sleep Detector</label>
+          <label class="form-label" for="field_sleepDetector" jhiTranslate="temiraBusinessManagerApp.statement.sleepDetector"
+            >Sleep Detector</label
+          >
           <select
             class="form-control"
             id="field_sleepDetector"
@@ -99,13 +109,13 @@
           >
             <option [ngValue]="null"></option>
             @for (sleepDetectorOption of sleepDetectorsSharedCollection; track $index) {
-              <option [ngValue]="sleepDetectorOption">{{ sleepDetectorOption.id }}</option>
+              <option [ngValue]="sleepDetectorOption">{{ sleepDetectorOption.name }}</option>
             }
           </select>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_vehicle" jhiTranslate="temiraApp.statement.vehicle">Vehicle</label>
+          <label class="form-label" for="field_vehicle" jhiTranslate="temiraBusinessManagerApp.statement.vehicle">Vehicle</label>
           <select
             class="form-control"
             id="field_vehicle"
@@ -116,13 +126,13 @@
           >
             <option [ngValue]="null"></option>
             @for (vehicleOption of vehiclesSharedCollection; track $index) {
-              <option [ngValue]="vehicleOption">{{ vehicleOption.id }}</option>
+              <option [ngValue]="vehicleOption">{{ vehicleOption.name }}</option>
             }
           </select>
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_driver" jhiTranslate="temiraApp.statement.driver">Driver</label>
+          <label class="form-label" for="field_driver" jhiTranslate="temiraBusinessManagerApp.statement.driver">Driver</label>
           <select
             class="form-control"
             id="field_driver"
@@ -133,7 +143,17 @@
           >
             <option [ngValue]="null"></option>
             @for (driverOption of driversSharedCollection; track $index) {
-              <option [ngValue]="driverOption">{{ driverOption.id }}</option>
+              <option [ngValue]="driverOption">{{ driverOption.firstName }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user" jhiTranslate="temiraBusinessManagerApp.statement.user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
             }
           </select>
         </div>

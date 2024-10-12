@@ -5,15 +5,12 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Statement.
  */
 @Entity
 @Table(name = "statement")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Statement implements Serializable {
 
@@ -39,16 +36,19 @@ public class Statement implements Serializable {
     private String pathCsv;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "vehicle", "driver", "user" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private SleepDetector sleepDetector;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "user", "sleepDetector" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "type", "brand" }, allowSetters = true)
     private Vehicle vehicle;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "user", "sleepDetector" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Driver driver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -140,6 +140,19 @@ public class Statement implements Serializable {
 
     public Statement driver(Driver driver) {
         this.setDriver(driver);
+        return this;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Statement user(User user) {
+        this.setUser(user);
         return this;
     }
 

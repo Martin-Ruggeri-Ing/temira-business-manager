@@ -2,7 +2,7 @@
   <div class="col-8">
     @if (statement(); as statementRef) {
       <div>
-        <h2 data-cy="statementDetailsHeading"><span jhiTranslate="temiraApp.statement.detail.title">Statement</span></h2>
+        <h2 data-cy="statementDetailsHeading"><span jhiTranslate="temiraBusinessManagerApp.statement.detail.title">Statement</span></h2>
 
         <hr />
 
@@ -15,41 +15,45 @@
           <dd>
             <span>{{ statementRef.id }}</span>
           </dd>
-          <dt><span jhiTranslate="temiraApp.statement.dateCreation">Date Creation</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.statement.dateCreation">Date Creation</span></dt>
           <dd>
             <span>{{ statementRef.dateCreation | formatMediumDatetime }}</span>
           </dd>
-          <dt><span jhiTranslate="temiraApp.statement.destination">Destination</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.statement.destination">Destination</span></dt>
           <dd>
             <span>{{ statementRef.destination }}</span>
           </dd>
-          <dt><span jhiTranslate="temiraApp.statement.pathCsv">Path Csv</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.statement.pathCsv">Path Csv</span></dt>
           <dd>
             <span>{{ statementRef.pathCsv }}</span>
           </dd>
-          <dt><span jhiTranslate="temiraApp.statement.sleepDetector">Sleep Detector</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.statement.sleepDetector">Sleep Detector</span></dt>
           <dd>
             @if (statement()!.sleepDetector) {
               <div>
-                <a [routerLink]="['/sleep-detector', statement()!.sleepDetector?.id, 'view']">{{ statementRef.sleepDetector?.id }}</a>
+                <a [routerLink]="['/sleep-detector', statement()!.sleepDetector?.id, 'view']">{{ statementRef.sleepDetector?.name }}</a>
               </div>
             }
           </dd>
-          <dt><span jhiTranslate="temiraApp.statement.vehicle">Vehicle</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.statement.vehicle">Vehicle</span></dt>
           <dd>
             @if (statement()!.vehicle) {
               <div>
-                <a [routerLink]="['/vehicle', statement()!.vehicle?.id, 'view']">{{ statementRef.vehicle?.id }}</a>
+                <a [routerLink]="['/vehicle', statement()!.vehicle?.id, 'view']">{{ statementRef.vehicle?.name }}</a>
               </div>
             }
           </dd>
-          <dt><span jhiTranslate="temiraApp.statement.driver">Driver</span></dt>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.statement.driver">Driver</span></dt>
           <dd>
             @if (statement()!.driver) {
               <div>
-                <a [routerLink]="['/driver', statement()!.driver?.id, 'view']">{{ statementRef.driver?.id }}</a>
+                <a [routerLink]="['/driver', statement()!.driver?.id, 'view']">{{ statementRef.driver?.firstName }}</a>
               </div>
             }
+          </dd>
+          <dt><span jhiTranslate="temiraBusinessManagerApp.statement.user">User</span></dt>
+          <dd>
+            <span>{{ statementRef.user?.login }}</span>
           </dd>
         </dl>
 

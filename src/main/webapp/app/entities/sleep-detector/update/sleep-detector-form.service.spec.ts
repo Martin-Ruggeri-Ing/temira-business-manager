@@ -20,8 +20,7 @@ describe('SleepDetector Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            vehicle: expect.any(Object),
-            driver: expect.any(Object),
+            name: expect.any(Object),
             user: expect.any(Object),
           }),
         );
@@ -33,8 +32,7 @@ describe('SleepDetector Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            vehicle: expect.any(Object),
-            driver: expect.any(Object),
+            name: expect.any(Object),
             user: expect.any(Object),
           }),
         );

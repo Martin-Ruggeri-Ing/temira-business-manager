@@ -10,7 +10,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -18,8 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +36,6 @@ class UserServiceIT {
     private static final String DEFAULT_FIRSTNAME = "john";
 
     private static final String DEFAULT_LASTNAME = "doe";
-
-    @Autowired
-    private CacheManager cacheManager;
 
     private static final String DEFAULT_IMAGEURL = "http://placehold.it/50x50";
 
@@ -86,12 +80,6 @@ class UserServiceIT {
 
     @AfterEach
     public void cleanupAndCheck() {
-        cacheManager
-            .getCacheNames()
-            .stream()
-            .map(cacheName -> this.cacheManager.getCache(cacheName))
-            .filter(Objects::nonNull)
-            .forEach(Cache::clear);
         userService.deleteUser(DEFAULT_LOGIN);
         assertThat(userRepository.count()).isEqualTo(numberOfUsers);
         numberOfUsers = null;

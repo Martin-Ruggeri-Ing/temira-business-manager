@@ -45,8 +45,9 @@ public class SleepDetectorAsserts {
      * @param actual the actual entity
      */
     public static void assertSleepDetectorUpdatableFieldsEquals(SleepDetector expected, SleepDetector actual) {
-        // empty method
-
+        assertThat(expected)
+            .as("Verify SleepDetector relevant properties")
+            .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()));
     }
 
     /**
@@ -56,9 +57,6 @@ public class SleepDetectorAsserts {
      * @param actual the actual entity
      */
     public static void assertSleepDetectorUpdatableRelationshipsEquals(SleepDetector expected, SleepDetector actual) {
-        assertThat(expected)
-            .as("Verify SleepDetector relationships")
-            .satisfies(e -> assertThat(e.getVehicle()).as("check vehicle").isEqualTo(actual.getVehicle()))
-            .satisfies(e -> assertThat(e.getDriver()).as("check driver").isEqualTo(actual.getDriver()));
+        // empty method
     }
 }

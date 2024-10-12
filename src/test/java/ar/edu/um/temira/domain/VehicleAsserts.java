@@ -48,8 +48,7 @@ public class VehicleAsserts {
         assertThat(expected)
             .as("Verify Vehicle relevant properties")
             .satisfies(e -> assertThat(e.getModel()).as("check model").isEqualTo(actual.getModel()))
-            .satisfies(e -> assertThat(e.getType()).as("check type").isEqualTo(actual.getType()))
-            .satisfies(e -> assertThat(e.getBrand()).as("check brand").isEqualTo(actual.getBrand()));
+            .satisfies(e -> assertThat(e.getName()).as("check name").isEqualTo(actual.getName()));
     }
 
     /**
@@ -59,6 +58,9 @@ public class VehicleAsserts {
      * @param actual the actual entity
      */
     public static void assertVehicleUpdatableRelationshipsEquals(Vehicle expected, Vehicle actual) {
-        // empty method
+        assertThat(expected)
+            .as("Verify Vehicle relationships")
+            .satisfies(e -> assertThat(e.getType()).as("check type").isEqualTo(actual.getType()))
+            .satisfies(e -> assertThat(e.getBrand()).as("check brand").isEqualTo(actual.getBrand()));
     }
 }

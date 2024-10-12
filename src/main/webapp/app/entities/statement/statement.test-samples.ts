@@ -3,30 +3,30 @@ import dayjs from 'dayjs/esm';
 import { IStatement, NewStatement } from './statement.model';
 
 export const sampleWithRequiredData: IStatement = {
-  id: 26963,
-  dateCreation: dayjs('2024-10-10T02:54'),
-  destination: 'rosemary',
-  pathCsv: 'brr because',
+  id: 27960,
+  dateCreation: dayjs('2024-10-12T12:15'),
+  destination: 'heartfelt worriedly countess',
+  pathCsv: 'worth replicate',
 };
 
 export const sampleWithPartialData: IStatement = {
-  id: 15921,
-  dateCreation: dayjs('2024-10-09T09:08'),
-  destination: 'above brandish',
-  pathCsv: 'where yet at',
+  id: 14041,
+  dateCreation: dayjs('2024-10-12T01:48'),
+  destination: 'gallivant',
+  pathCsv: 'electrify ha offensively',
 };
 
 export const sampleWithFullData: IStatement = {
-  id: 25334,
-  dateCreation: dayjs('2024-10-09T07:19'),
-  destination: 'where so',
-  pathCsv: 'worriedly',
+  id: 12961,
+  dateCreation: dayjs('2024-10-12T09:09'),
+  destination: 'energetically napkin microchip',
+  pathCsv: 'whoever insert coliseum',
 };
 
 export const sampleWithNewData: NewStatement = {
-  dateCreation: dayjs('2024-10-09T12:06'),
-  destination: 'lowball experienced',
-  pathCsv: 'below whoa video',
+  dateCreation: dayjs('2024-10-12T18:13'),
+  destination: 'mount exterior difficult',
+  pathCsv: 'nor and',
   id: null,
 };
 

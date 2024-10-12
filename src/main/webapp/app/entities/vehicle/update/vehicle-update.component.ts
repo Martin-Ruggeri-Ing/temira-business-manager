@@ -9,8 +9,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
-import { VehicleType } from 'app/entities/enumerations/vehicle-type.model';
-import { VehicleBrand } from 'app/entities/enumerations/vehicle-brand.model';
+import { IVehicleType } from 'app/entities/vehicle-type/vehicle-type.model';
+import { VehicleTypeService } from 'app/entities/vehicle-type/service/vehicle-type.service';
+import { IVehicleBrand } from 'app/entities/vehicle-brand/vehicle-brand.model';
+import { VehicleBrandService } from 'app/entities/vehicle-brand/service/vehicle-brand.service';
 import { VehicleService } from '../service/vehicle.service';
 import { IVehicle } from '../vehicle.model';
 import { VehicleFormGroup, VehicleFormService } from './vehicle-form.service';
@@ -24,20 +26,27 @@ import { VehicleFormGroup, VehicleFormService } from './vehicle-form.service';
 export class VehicleUpdateComponent implements OnInit {
   isSaving = false;
   vehicle: IVehicle | null = null;
-  vehicleTypeValues = Object.keys(VehicleType);
-  vehicleBrandValues = Object.keys(VehicleBrand);
 
   usersSharedCollection: IUser[] = [];
+  vehicleTypesSharedCollection: IVehicleType[] = [];
+  vehicleBrandsSharedCollection: IVehicleBrand[] = [];
 
   protected vehicleService = inject(VehicleService);
   protected vehicleFormService = inject(VehicleFormService);
   protected userService = inject(UserService);
+  protected vehicleTypeService = inject(VehicleTypeService);
+  protected vehicleBrandService = inject(VehicleBrandService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: VehicleFormGroup = this.vehicleFormService.createVehicleFormGroup();
 
   compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
+
+  compareVehicleType = (o1: IVehicleType | null, o2: IVehicleType | null): boolean => this.vehicleTypeService.compareVehicleType(o1, o2);
+
+  compareVehicleBrand = (o1: IVehicleBrand | null, o2: IVehicleBrand | null): boolean =>
+    this.vehicleBrandService.compareVehicleBrand(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ vehicle }) => {
@@ -88,6 +97,14 @@ export class VehicleUpdateComponent implements OnInit {
     this.vehicleFormService.resetForm(this.editForm, vehicle);
 
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, vehicle.user);
+    this.vehicleTypesSharedCollection = this.vehicleTypeService.addVehicleTypeToCollectionIfMissing<IVehicleType>(
+      this.vehicleTypesSharedCollection,
+      vehicle.type,
+    );
+    this.vehicleBrandsSharedCollection = this.vehicleBrandService.addVehicleBrandToCollectionIfMissing<IVehicleBrand>(
+      this.vehicleBrandsSharedCollection,
+      vehicle.brand,
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -96,5 +113,25 @@ export class VehicleUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.vehicle?.user)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+
+    this.vehicleTypeService
+      .query()
+      .pipe(map((res: HttpResponse<IVehicleType[]>) => res.body ?? []))
+      .pipe(
+        map((vehicleTypes: IVehicleType[]) =>
+          this.vehicleTypeService.addVehicleTypeToCollectionIfMissing<IVehicleType>(vehicleTypes, this.vehicle?.type),
+        ),
+      )
+      .subscribe((vehicleTypes: IVehicleType[]) => (this.vehicleTypesSharedCollection = vehicleTypes));
+
+    this.vehicleBrandService
+      .query()
+      .pipe(map((res: HttpResponse<IVehicleBrand[]>) => res.body ?? []))
+      .pipe(
+        map((vehicleBrands: IVehicleBrand[]) =>
+          this.vehicleBrandService.addVehicleBrandToCollectionIfMissing<IVehicleBrand>(vehicleBrands, this.vehicle?.brand),
+        ),
+      )
+      .subscribe((vehicleBrands: IVehicleBrand[]) => (this.vehicleBrandsSharedCollection = vehicleBrands));
   }
 }

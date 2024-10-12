@@ -26,6 +26,7 @@ describe('Statement Form Service', () => {
             sleepDetector: expect.any(Object),
             vehicle: expect.any(Object),
             driver: expect.any(Object),
+            user: expect.any(Object),
           }),
         );
       });
@@ -42,6 +43,7 @@ describe('Statement Form Service', () => {
             sleepDetector: expect.any(Object),
             vehicle: expect.any(Object),
             driver: expect.any(Object),
+            user: expect.any(Object),
           }),
         );
       });

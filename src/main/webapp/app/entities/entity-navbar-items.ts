@@ -2,6 +2,16 @@ import NavbarItem from 'app/layouts/navbar/navbar-item.model';
 
 export const EntityNavbarItems: NavbarItem[] = [
   {
+    name: 'VehicleType',
+    route: '/vehicle-type',
+    translationKey: 'global.menu.entities.vehicleType',
+  },
+  {
+    name: 'VehicleBrand',
+    route: '/vehicle-brand',
+    translationKey: 'global.menu.entities.vehicleBrand',
+  },
+  {
     name: 'Vehicle',
     route: '/vehicle',
     translationKey: 'global.menu.entities.vehicle',

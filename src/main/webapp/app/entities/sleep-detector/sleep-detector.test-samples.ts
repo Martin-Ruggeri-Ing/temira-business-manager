@@ -1,18 +1,22 @@
 import { ISleepDetector, NewSleepDetector } from './sleep-detector.model';
 
 export const sampleWithRequiredData: ISleepDetector = {
-  id: 26163,
+  id: 11298,
+  name: 'pulverize who',
 };
 
 export const sampleWithPartialData: ISleepDetector = {
-  id: 9946,
+  id: 15481,
+  name: 'once',
 };
 
 export const sampleWithFullData: ISleepDetector = {
-  id: 231,
+  id: 25741,
+  name: 'celsius',
 };
 
 export const sampleWithNewData: NewSleepDetector = {
+  name: 'meanwhile geez',
   id: null,
 };
 

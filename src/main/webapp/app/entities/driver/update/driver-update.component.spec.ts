@@ -49,10 +49,10 @@ describe('Driver Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call User query and add missing value', () => {
       const driver: IDriver = { id: 456 };
-      const user: IUser = { id: 10698 };
+      const user: IUser = { id: 23035 };
       driver.user = user;
 
-      const userCollection: IUser[] = [{ id: 10559 }];
+      const userCollection: IUser[] = [{ id: 3764 }];
       jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
       const additionalUsers = [user];
       const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
@@ -71,7 +71,7 @@ describe('Driver Management Update Component', () => {
 
     it('Should update editForm', () => {
       const driver: IDriver = { id: 456 };
-      const user: IUser = { id: 27982 };
+      const user: IUser = { id: 32393 };
       driver.user = user;
 
       activatedRoute.data = of({ driver });

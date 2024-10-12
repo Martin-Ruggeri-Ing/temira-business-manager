@@ -1,8 +1,6 @@
 package ar.edu.um.temira.domain;
 
-import static ar.edu.um.temira.domain.DriverTestSamples.*;
 import static ar.edu.um.temira.domain.SleepDetectorTestSamples.*;
-import static ar.edu.um.temira.domain.VehicleTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ar.edu.um.temira.web.rest.TestUtil;
@@ -22,29 +20,5 @@ class SleepDetectorTest {
 
         sleepDetector2 = getSleepDetectorSample2();
         assertThat(sleepDetector1).isNotEqualTo(sleepDetector2);
-    }
-
-    @Test
-    void vehicleTest() {
-        SleepDetector sleepDetector = getSleepDetectorRandomSampleGenerator();
-        Vehicle vehicleBack = getVehicleRandomSampleGenerator();
-
-        sleepDetector.setVehicle(vehicleBack);
-        assertThat(sleepDetector.getVehicle()).isEqualTo(vehicleBack);
-
-        sleepDetector.vehicle(null);
-        assertThat(sleepDetector.getVehicle()).isNull();
-    }
-
-    @Test
-    void driverTest() {
-        SleepDetector sleepDetector = getSleepDetectorRandomSampleGenerator();
-        Driver driverBack = getDriverRandomSampleGenerator();
-
-        sleepDetector.setDriver(driverBack);
-        assertThat(sleepDetector.getDriver()).isEqualTo(driverBack);
-
-        sleepDetector.driver(null);
-        assertThat(sleepDetector.getDriver()).isNull();
     }
 }

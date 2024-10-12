@@ -1,7 +1,11 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-vehicle-heading" data-cy="VehicleCreateUpdateHeading" jhiTranslate="temiraApp.vehicle.home.createOrEditLabel">
+      <h2
+        id="jhi-vehicle-heading"
+        data-cy="VehicleCreateUpdateHeading"
+        jhiTranslate="temiraBusinessManagerApp.vehicle.home.createOrEditLabel"
+      >
         Crear o editar Vehicle
       </h2>
 
@@ -10,14 +14,14 @@
 
         @if (editForm.controls.id.value !== null) {
           <div class="mb-3">
-            <label class="form-label" for="field_id" jhiTranslate="temiraApp.vehicle.id">ID</label>
+            <label class="form-label" for="field_id" jhiTranslate="temiraBusinessManagerApp.vehicle.id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
         @let modelRef = editForm.get('model')!;
         <div class="mb-3">
-          <label class="form-label" for="field_model" jhiTranslate="temiraApp.vehicle.model">Model</label>
+          <label class="form-label" for="field_model" jhiTranslate="temiraBusinessManagerApp.vehicle.model">Model</label>
           <input type="number" class="form-control" name="model" id="field_model" data-cy="model" formControlName="model" />
           @if (modelRef.invalid && (modelRef.dirty || modelRef.touched)) {
             <div>
@@ -41,32 +45,52 @@
           }
         </div>
 
+        @let nameRef = editForm.get('name')!;
         <div class="mb-3">
-          <label class="form-label" for="field_type" jhiTranslate="temiraApp.vehicle.type">Type</label>
-          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
-            <option [ngValue]="null">{{ 'temiraApp.VehicleType.null' | translate }}</option>
-            @for (vehicleType of vehicleTypeValues; track $index) {
-              <option [value]="vehicleType">{{ 'temiraApp.VehicleType.' + vehicleType | translate }}</option>
-            }
-          </select>
+          <label class="form-label" for="field_name" jhiTranslate="temiraBusinessManagerApp.vehicle.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_brand" jhiTranslate="temiraApp.vehicle.brand">Brand</label>
-          <select class="form-control" name="brand" formControlName="brand" id="field_brand" data-cy="brand">
-            <option [ngValue]="null">{{ 'temiraApp.VehicleBrand.null' | translate }}</option>
-            @for (vehicleBrand of vehicleBrandValues; track $index) {
-              <option [value]="vehicleBrand">{{ 'temiraApp.VehicleBrand.' + vehicleBrand | translate }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_user" jhiTranslate="temiraApp.vehicle.user">User</label>
+          <label class="form-label" for="field_user" jhiTranslate="temiraBusinessManagerApp.vehicle.user">User</label>
           <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
             <option [ngValue]="null"></option>
             @for (userOption of usersSharedCollection; track $index) {
               <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_type" jhiTranslate="temiraBusinessManagerApp.vehicle.type">Type</label>
+          <select class="form-control" id="field_type" data-cy="type" name="type" formControlName="type" [compareWith]="compareVehicleType">
+            <option [ngValue]="null"></option>
+            @for (vehicleTypeOption of vehicleTypesSharedCollection; track $index) {
+              <option [ngValue]="vehicleTypeOption">{{ vehicleTypeOption.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_brand" jhiTranslate="temiraBusinessManagerApp.vehicle.brand">Brand</label>
+          <select
+            class="form-control"
+            id="field_brand"
+            data-cy="brand"
+            name="brand"
+            formControlName="brand"
+            [compareWith]="compareVehicleBrand"
+          >
+            <option [ngValue]="null"></option>
+            @for (vehicleBrandOption of vehicleBrandsSharedCollection; track $index) {
+              <option [ngValue]="vehicleBrandOption">{{ vehicleBrandOption.name }}</option>
             }
           </select>
         </div>

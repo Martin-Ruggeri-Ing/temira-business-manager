@@ -139,12 +139,21 @@ public class StatementResource {
      * {@code GET  /statements} : get all the statements.
      *
      * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of statements in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<StatementDTO>> getAllStatements(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<StatementDTO>> getAllStatements(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+    ) {
         LOG.debug("REST request to get a page of Statements");
-        Page<StatementDTO> page = statementService.findAll(pageable);
+        Page<StatementDTO> page;
+        if (eagerload) {
+            page = statementService.findAllWithEagerRelationships(pageable);
+        } else {
+            page = statementService.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

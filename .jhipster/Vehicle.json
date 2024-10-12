@@ -1,8 +1,8 @@
 {
   "annotations": {
-    "changelogDate": "20241010032458"
+    "changelogDate": "20241012202537"
   },
-  "applications": ["temira"],
+  "applications": ["temiraBusinessManager"],
   "dto": "mapstruct",
   "fields": [
     {
@@ -13,18 +13,13 @@
       "fieldValidateRulesMin": "1900"
     },
     {
-      "fieldName": "type",
-      "fieldType": "VehicleType",
-      "fieldValues": "Camion,Autobus,Tren,Casas,Rodantes,Furgon,Camioneta,Auto"
-    },
-    {
-      "fieldName": "brand",
-      "fieldType": "VehicleBrand",
-      "fieldValues": "Mercedes,Benz,Scania,Volvo,Trucks,Iveco,Ford,Marcopolo,Agrale,Buses,Materfer,Alstom,CAF,Sprinter,Camper,Volkswagen,Daily,Renault,Peugeot,Citroen,Transit,Ranger"
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     }
   ],
   "name": "Vehicle",
-  "pagination": "pagination",
+  "pagination": "infinite-scroll",
   "relationships": [
     {
       "otherEntityField": "login",
@@ -33,8 +28,22 @@
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "vehicleType",
+      "relationshipName": "type",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "vehicleBrand",
+      "relationshipName": "brand",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "no",
-  "service": "serviceClass"
+  "service": "serviceImpl"
 }

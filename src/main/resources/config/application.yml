@@ -40,7 +40,6 @@ management:
           - loggers
           - prometheus
           - threaddump
-          - caches
           - liquibase
   endpoint:
     health:
@@ -92,7 +91,7 @@ management:
 
 spring:
   application:
-    name: temira
+    name: temiraBusinessManager
   docker:
     compose:
       enabled: true
@@ -123,7 +122,7 @@ spring:
       hibernate.type.preferred_instant_jdbc_type: TIMESTAMP
       hibernate.id.new_generator_mappings: true
       hibernate.connection.provider_disables_autocommit: true
-      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.use_second_level_cache: false
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
       # modify batch size as necessary
@@ -152,13 +151,13 @@ spring:
           authorities-claim-name: auth
   task:
     execution:
-      thread-name-prefix: temira-task-
+      thread-name-prefix: temira-business-manager-task-
       pool:
         core-size: 2
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: temira-scheduling-
+      thread-name-prefix: temira-business-manager-scheduling-
       pool:
         size: 2
   thymeleaf:
@@ -189,7 +188,7 @@ info:
 
 jhipster:
   clientApp:
-    name: 'temiraApp'
+    name: 'temiraBusinessManagerApp'
   # By default CORS is disabled. Uncomment to enable.
   # cors:
   #   allowed-origins: "http://localhost:8100,http://localhost:9000"
@@ -199,12 +198,12 @@ jhipster:
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: temira@localhost
+    from: temiraBusinessManager@localhost
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
-    title: Temira API
-    description: Temira API documentation
+    title: Temira Business Manager API
+    description: Temira Business Manager API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:

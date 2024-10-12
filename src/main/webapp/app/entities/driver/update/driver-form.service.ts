@@ -41,10 +41,10 @@ export class DriverFormService {
         },
       ),
       firstName: new FormControl(driverRawValue.firstName, {
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(3), Validators.maxLength(50)],
       }),
       lastName: new FormControl(driverRawValue.lastName, {
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(3), Validators.maxLength(50)],
       }),
       user: new FormControl(driverRawValue.user),
     });

@@ -44,6 +44,9 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class SleepDetectorResourceIT {
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/sleep-detectors";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -85,7 +88,7 @@ class SleepDetectorResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static SleepDetector createEntity() {
-        return new SleepDetector();
+        return new SleepDetector().name(DEFAULT_NAME);
     }
 
     /**
@@ -95,7 +98,7 @@ class SleepDetectorResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static SleepDetector createUpdatedEntity() {
-        return new SleepDetector();
+        return new SleepDetector().name(UPDATED_NAME);
     }
 
     @BeforeEach
@@ -155,6 +158,23 @@ class SleepDetectorResourceIT {
 
     @Test
     @Transactional
+    void checkNameIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        sleepDetector.setName(null);
+
+        // Create the SleepDetector, which fails.
+        SleepDetectorDTO sleepDetectorDTO = sleepDetectorMapper.toDto(sleepDetector);
+
+        restSleepDetectorMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(sleepDetectorDTO)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllSleepDetectors() throws Exception {
         // Initialize the database
         insertedSleepDetector = sleepDetectorRepository.saveAndFlush(sleepDetector);
@@ -164,7 +184,8 @@ class SleepDetectorResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(sleepDetector.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(sleepDetector.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -195,7 +216,8 @@ class SleepDetectorResourceIT {
             .perform(get(ENTITY_API_URL_ID, sleepDetector.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(sleepDetector.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(sleepDetector.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
 
     @Test
@@ -217,6 +239,7 @@ class SleepDetectorResourceIT {
         SleepDetector updatedSleepDetector = sleepDetectorRepository.findById(sleepDetector.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedSleepDetector are not directly saved in db
         em.detach(updatedSleepDetector);
+        updatedSleepDetector.name(UPDATED_NAME);
         SleepDetectorDTO sleepDetectorDTO = sleepDetectorMapper.toDto(updatedSleepDetector);
 
         restSleepDetectorMockMvc
@@ -334,6 +357,8 @@ class SleepDetectorResourceIT {
         // Update the sleepDetector using partial update
         SleepDetector partialUpdatedSleepDetector = new SleepDetector();
         partialUpdatedSleepDetector.setId(sleepDetector.getId());
+
+        partialUpdatedSleepDetector.name(UPDATED_NAME);
 
         restSleepDetectorMockMvc
             .perform(

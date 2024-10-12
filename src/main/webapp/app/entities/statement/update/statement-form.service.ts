@@ -37,6 +37,7 @@ type StatementFormGroupContent = {
   sleepDetector: FormControl<StatementFormRawValue['sleepDetector']>;
   vehicle: FormControl<StatementFormRawValue['vehicle']>;
   driver: FormControl<StatementFormRawValue['driver']>;
+  user: FormControl<StatementFormRawValue['user']>;
 };
 
 export type StatementFormGroup = FormGroup<StatementFormGroupContent>;
@@ -68,6 +69,7 @@ export class StatementFormService {
       sleepDetector: new FormControl(statementRawValue.sleepDetector),
       vehicle: new FormControl(statementRawValue.vehicle),
       driver: new FormControl(statementRawValue.driver),
+      user: new FormControl(statementRawValue.user),
     });
   }
 
